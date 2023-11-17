@@ -85,7 +85,7 @@ connection.connect((err) => {
       <h1>Administrador: Sedes</h1>
       <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
       <button onclick="location.href='/updateSede'">Modificar</button>
-      <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+      <button onclick="location.href='/deleteSede'">Borrar</button>
     `);
   });
 
@@ -95,7 +95,7 @@ connection.connect((err) => {
           <h1>Administrador: Equipamiento</h1>
           <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
           <button onclick="location.href='/sedeInsertForm'">Modificar</button>
-          <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+          <button onclick="location.href='/deleteEquipamiento'">Borrar</button>
         `);
       });
 
@@ -353,7 +353,7 @@ app.get('/showDevTable', (req, res) => {
 //*************UPDATES*************
 // Route to render the initial form to enter SEDE CUIT
 app.get('/updateSede', (req, res) => {
-    res.sendFile(__dirname + '/enterSedeCUITForm.html');
+    res.sendFile(__dirname + '\\views/enterSedeCUITForm.html');
   });
   
   // Route to handle the form submission and redirect to the update form
@@ -439,6 +439,45 @@ app.get('/updateSede', (req, res) => {
 
 
 
+//*************DELETES*************
+
+// Route to render the form to enter EQUIPAMIENTO ID for deletion
+app.get('/deleteEquipamiento', (req, res) => {
+    res.send(`
+      <h2>Delete EQUIPAMIENTO</h2>
+      <form action="/deleteEquipamiento" method="post">
+        <label for="id_equipamiento">ID Equipamiento:</label>
+        <input type="text" name="id_equipamiento" required><br>
+        <button type="submit">Delete EQUIPAMIENTO</button>
+      </form>
+    `);
+  });
+  
+  // Route to handle the form submission and delete the EQUIPAMIENTO
+  app.post('/deleteEquipamiento', (req, res) => {
+    const idEquipamiento = req.body.id_equipamiento;
+  
+    // SQL query to delete the EQUIPAMIENTO record
+    const deleteEquipamientoQuery = 'DELETE FROM EQUIPAMIENTO WHERE id_equipamiento = ?';
+  
+    // Execute the query with the provided ID Equipamiento
+    connection.query(deleteEquipamientoQuery, [idEquipamiento], (deleteErr, deleteResults) => {
+      if (deleteErr) {
+        console.error('Error deleting EQUIPAMIENTO:', deleteErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+  
+      // Check if any record was deleted
+      if (deleteResults.affectedRows === 0) {
+        res.status(404).send('EQUIPAMIENTO not found for deletion');
+        return;
+      }
+  
+      res.send('EQUIPAMIENTO deleted successfully!');
+    });
+  });
+  
 
 
   // Start the server

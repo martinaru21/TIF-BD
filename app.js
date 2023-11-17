@@ -10,7 +10,7 @@ const port = 3000;
 const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'edinburgo2030',
+    password: '123456',
     database: 'tif',
 });
 
@@ -75,7 +75,7 @@ connection.connect((err) => {
           <h1>Administrador: Bugs</h1>
           <button onclick="location.href='/bugInsertForm'">Nuevo</button>
           <button onclick="location.href='/bugInsertForm'">Modificar</button>
-          <button onclick="location.href='/bugInsertForm'">Insertar</button>
+          <button onclick="location.href='/bugInsertForm'">Borrar</button>
         `);
       });
   
@@ -139,17 +139,20 @@ connection.connect((err) => {
   
       // Render the data in an HTML table
       const tableRows = results.map((row) => {
+        const reportDate = new Date(row.fecha_reporte).toLocaleDateString('en-GB');
+        var resolutionDate = new Date(row.fecha_solucion).toLocaleDateString('en-GB');
+        if(resolutionDate === '31/12/1969') resolutionDate = '-';
         return `<tr>
-          <td style="max-width: 100px; overflow: auto; text-overflow: ellipsis;white-space: nowrap;">${row.id_bug}</td>
-          <td style="max-width: 100px; overflow: auto; text-overflow: ellipsis;white-space: nowrap;">${row.titulo}</td>
-          <td style="max-width: 100px; overflow: auto; text-overflow: ellipsis;white-space: nowrap;">${row.descripcion}</td>
+          <td>${row.id_bug}</td>
+          <td style="max-width: 100px; overflow: auto; max-height: 50px;">${row.titulo_bug}</td>
+          <td style="max-width: 200px; overflow: auto; max-height: 50px;">${row.desc_bug}</td>
           <td>${row.prioridad}</td>
-          <td style="max-width: 100px; overflow: auto; text-overflow: ellipsis;white-space: nowrap;">${row.archivo_evidencia}</td>
-          <td>${row.fecha_reporte}</td>
-          <td>${row.fecha_solucion}</td>
-          <td style="max-width: 100px; overflow: auto; text-overflow: ellipsis;white-space: nowrap;">${row.idFeature}</td>
-          <td style="max-width: 100px; overflow: auto; text-overflow: ellipsis;white-space: nowrap;">${row.idEscenario}</td>
-          <td style="max-width: 100px; overflow: auto; text-overflow: ellipsis;white-space: nowrap;">${row.userTester}</td>
+          <td>${row.archivo_evidencia}</td>
+          <td style="max-width: 100px; overflow: auto; max-height: 50px;">${reportDate}</td>
+          <td style="max-width: 100px; overflow: auto; max-height: 50px;">${resolutionDate}</td>
+          <td style="max-width: 100px; overflow: auto; max-height: 50px;">${row.id_feature || '-'}</td>
+          <td style="max-width: 100px; overflow: auto; max-height: 50px;">${row.id_escenario || '-'}</td>
+          <td>${row.tester_user}</td>
         </tr>`;
       });
   
@@ -174,35 +177,16 @@ connection.connect((err) => {
           <th>Priority</th>
           <th>Evidence File</th>
           <th>Report Date</th>
-          <th>Solution Date</th>
+          <th>Resolution Date</th>
           <th>Feature ID</th>
           <th>Scenario ID</th>
-          <th>Tester DNI</th>
+          <th>Tester User</th>
         </tr>
         ${tableRows.join('')}
       </table>`;
   
       // Send the HTML response with the table
       res.send(tableHtml);
-    });
-  });
-  
-  // Serve the HTML form for inserting a bug
-  app.get('/bugInsertForm', (req, res) => {
-    res.sendFile(__dirname + '/bugInsertForm.html'); // Provide the path to your bugInsertForm.html file
-  });
-  
-  // Handle the form submission for inserting a bug
-  app.post('/insertBug', async (req, res) => {
-    const { titulo, descripcion, prioridad, nombreEvidencia, idFeature, idEscenario, userTester } = req.body;
-    
-    connection.query("call crearBug(?, ?, ?, ?, ?, ?, ?)", [titulo, descripcion, prioridad, nombreEvidencia, idFeature, idEscenario, userTester], function (err, result)
-    {
-        if (err) {
-            console.log("err:", err);
-        } else {
-            console.log("results:", result);
-        }
     });
   });
 
@@ -333,7 +317,7 @@ app.get('/showDevTable', (req, res) => {
 //*************INSERTS*************
   // Serve the HTML form for inserting a SEDE
   app.get('/sedeInsertForm', (req, res) => {
-    res.sendFile(__dirname + '/sedeInsertForm.html'); // Provide the path to your sedeInsertForm.html file
+    res.sendFile(__dirname + '\\views/sedeInsertForm.html'); // Provide the path to your sedeInsertForm.html file
   });
   
   // Handle the form submission for inserting a SEDE
@@ -348,12 +332,33 @@ app.get('/showDevTable', (req, res) => {
     });
   });
 
+  // Serve the HTML form for inserting a bug
+  app.get('/bugInsertForm', (req, res) => {
+    res.sendFile(__dirname + '\\views/bugInsertForm.html'); // Provide the path to your bugInsertForm.html file
+  });
+  
+  // Handle the form submission for inserting a bug
+  app.post('/insertBug', async (req, res) => {
+    var { titulo, descripcion, prioridad, nombreEvidencia, idFeature, idEscenario, userTester } = req.body;
+    if (!idFeature) idFeature = null;
+    if (!idEscenario) idEscenario = null;
+    connection.query("call crearBug(?, ?, ?, ?, ?, ?, ?)", [titulo, descripcion, prioridad, nombreEvidencia, idFeature, idEscenario, userTester], function (err, result)
+    {
+        if (err) {
+            console.log("err:", err);
+        } else {
+            console.log("results:", result);
+        }
+    });
+  });
 
 
 //*************UPDATES*************
+//SEDE
+
 // Route to render the initial form to enter SEDE CUIT
 app.get('/updateSede', (req, res) => {
-    res.sendFile(__dirname + '/enterSedeCUITForm.html');
+    res.sendFile(__dirname + '\\views/enterSedeCUITForm.html');
   });
   
   // Route to handle the form submission and redirect to the update form
@@ -396,8 +401,93 @@ app.get('/updateSede', (req, res) => {
     });
   });
 
+// BUG
+
+// Route to render the initial form to enter BUG ID
+app.get('/updateBug', (req, res) => {
+  res.sendFile(__dirname + '\\views/enterBugIDForm.html');
+});
+
+// Route to handle the form submission and redirect to the update form
+app.post('/enterBugID', (req, res) => {
+  const { id_bug } = req.body;
+
+  // Check if id_bug is provided
+  if (!id_bug) {
+    res.status(400).send('Bug ID is required');
+    return;
+  }
+
+  // Redirect to the update form with the provided Bug ID
+  res.redirect(`/updateThisBug/${id_bug}`);
+});
 
 
+// Route to render the update form with BUG data
+app.get('/updateThisBug/:id_bug', (req, res) => {
+  const id_bug = req.params.id_bug;
+
+  // SQL query to check if the BUG with the given ID exists
+  const checkBugQuery = `SELECT * FROM BUG WHERE id_bug = ${id_bug}`;
+
+  connection.query(checkBugQuery, (checkErr, checkResults) => {
+    if (checkErr) {
+      console.error('Error checking BUG:', checkErr);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Check if the BUG with the given ID exists
+    if (checkResults.length === 0) {
+      res.status(404).send('BUG not found');
+      return;
+    }
+
+    // Render the update form with BUG data
+    res.render('updateBugForm', { bugData: checkResults[0] });
+  });
+});
+
+// Route to handle the updated data submission
+app.post('/submitUpdatedBug', (req, res) => {
+  const { id_bug, titulo_bug, desc_bug, prioridad, archivo_evidencia, id_feature, id_escenario, tester_user } = req.body;
+
+  // SQL query to update the BUG record
+  const updateBugQuery = `
+    UPDATE BUG
+    SET
+      id_bug = ?,
+      titulo_bug = ?,
+      desc_bug = ?,
+      prioridad = ?,
+      archivo_evidencia = ?,
+      id_feature = ?,
+      id_escenario = ?,
+      tester_user = ?
+    WHERE id_bug = ?;
+  `;
+
+  // Execute the query with the form data
+  connection.query(
+    updateBugQuery,
+    [id_bug, titulo_bug, desc_bug, prioridad, archivo_evidencia, id_feature, id_escenario, tester_user],
+    (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error('Error updating BUG:', updateErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+
+      // Check if any record was updated
+      if (updateResults.affectedRows === 0) {
+        res.status(404).send('BUG not found for update');
+        return;
+      }
+
+      res.send('BUG updated successfully!');
+    }
+  );
+});
 
 
 

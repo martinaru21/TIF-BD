@@ -2,10 +2,8 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
-
 const app = express();
 const port = 3000;
-
 // Configuracion de la conexion al server de MySQL
 const connection = mysql.createConnection({
     host: 'localhost',
@@ -26,6 +24,7 @@ connection.connect((err) => {
   // Set up body parser middleware to parse POST request data
   app.use(bodyParser.urlencoded({ extended: true }));
   app.use(bodyParser.json());
+
   
   // Set the view engine to ejs
   app.set('view engine', 'ejs');
@@ -74,7 +73,7 @@ connection.connect((err) => {
         res.send(`
           <h1>Administrador: Bugs</h1>
           <button onclick="location.href='/bugInsertForm'">Nuevo</button>
-          <button onclick="location.href='/bugInsertForm'">Modificar</button>
+          <button onclick="location.href='/updateBug'">Modificar</button>
           <button onclick="location.href='/bugInsertForm'">Borrar</button>
         `);
       });
@@ -450,8 +449,9 @@ app.get('/updateThisBug/:id_bug', (req, res) => {
 
 // Route to handle the updated data submission
 app.post('/submitUpdatedBug', (req, res) => {
-  const { id_bug, titulo_bug, desc_bug, prioridad, archivo_evidencia, id_feature, id_escenario, tester_user } = req.body;
-
+  var { id_bug, titulo_bug, desc_bug, prioridad, archivo_evidencia, id_feature, id_escenario, tester_user } = req.body;
+  if (!id_feature) id_feature = null;
+  if (!id_escenario) id_escenario = null;  
   // SQL query to update the BUG record
   const updateBugQuery = `
     UPDATE BUG
@@ -470,7 +470,7 @@ app.post('/submitUpdatedBug', (req, res) => {
   // Execute the query with the form data
   connection.query(
     updateBugQuery,
-    [id_bug, titulo_bug, desc_bug, prioridad, archivo_evidencia, id_feature, id_escenario, tester_user],
+    [id_bug, titulo_bug, desc_bug, prioridad, archivo_evidencia, id_feature, id_escenario, tester_user, id_bug],
     (updateErr, updateResults) => {
       if (updateErr) {
         console.error('Error updating BUG:', updateErr);
@@ -484,7 +484,8 @@ app.post('/submitUpdatedBug', (req, res) => {
         return;
       }
 
-      res.send('BUG updated successfully!');
+      res.redirect('/admin');
+
     }
   );
 });
@@ -496,3 +497,5 @@ app.post('/submitUpdatedBug', (req, res) => {
   app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
   });
+
+  module.exports = app;

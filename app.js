@@ -41,7 +41,7 @@ connection.connect((err) => {
   //*************MENU CONSULTAS*************
   app.get('/consultas', (req, res) => {
     res.send(`
-      <h1>Cosnultas</h1>
+      <h1>Consultas</h1>
       <button onclick="location.href='/showBugTable'">Show Bug Table</button>
       <button onclick="location.href='/showSedeTable'">Show Sede Table</button>
       <button onclick="location.href='/showDevTable'">Show Dev Table</button>
@@ -55,9 +55,9 @@ connection.connect((err) => {
       <button onclick="location.href='/bugMenu'">Bugs</button>
       <button onclick="location.href='/sedeMenu'">Sedes</button>
       <button onclick="location.href='/equipMenu'">Equipamiento</button>
-      <button onclick="location.href='/devMenu'">Developers</button>
+      <button onclick="location.href='/developerMenu'">Developers</button>
       <button onclick="location.href='/designerMenu'">Designers</button>
-      <button onclick="location.href='/artistMenu'">Artistas</button>
+      <button onclick="location.href='/artistaMenu'">Artistas</button>
       <button onclick="location.href='/testerMenu'">Testers</button>
       <button onclick="location.href='/assetMenu'">Assets</button>
       <button onclick="location.href='/featMenu'">Features</button>
@@ -84,7 +84,7 @@ connection.connect((err) => {
       <h1>Administrador: Sedes</h1>
       <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
       <button onclick="location.href='/updateSede'">Modificar</button>
-      <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+      <button onclick="location.href='/deleteSede'">Borrar</button>
     `);
   });
 
@@ -94,17 +94,17 @@ connection.connect((err) => {
           <h1>Administrador: Equipamiento</h1>
           <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
           <button onclick="location.href='/sedeInsertForm'">Modificar</button>
-          <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+          <button onclick="location.href='/deleteEquipamiento'">Borrar</button>
         `);
       });
 
   //*************MENU DEVELOPERS*************
-  app.get('/devMenu', (req, res) => {
+  app.get('/developerMenu', (req, res) => {
     res.send(`
       <h1>Administrador: Developers</h1>
-      <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
-      <button onclick="location.href='/sedeInsertForm'">Modificar</button>
-      <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+      <button onclick="location.href='/developerInsForm'">Nuevo</button>
+      <button onclick="location.href='/developerModForm'">Modificar</button>
+      <button onclick="location.href='/developerDelForm'">Eliminar</button>
     `);
   });
 
@@ -112,13 +112,31 @@ connection.connect((err) => {
   app.get('/designerMenu', (req, res) => {
     res.send(`
       <h1>Administrador: Designers</h1>
-      <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
-      <button onclick="location.href='/sedeInsertForm'">Modificar</button>
-      <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+      <button onclick="location.href='/designerInsForm'">Nuevo</button>
+      <button onclick="location.href='/designerModForm'">Modificar</button>
+      <button onclick="location.href='/designerDelForm'">Eliminar</button>
     `);
   });
 
+//*************MENU ARTISTAS*************
+app.get('/artistaMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: Artistas</h1>
+    <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
+    <button onclick="location.href='/sedeInsertForm'">Modificar</button>
+    <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+  `);
+});
 
+//*************MENU TESTERS*************
+app.get('/testerMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: Tester</h1>
+    <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
+    <button onclick="location.href='/sedeInsertForm'">Modificar</button>
+    <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+  `);
+});
 
 
 //*************MOSTRAR TABLAS*************
@@ -316,7 +334,7 @@ app.get('/showDevTable', (req, res) => {
 //*************INSERTS*************
   // Serve the HTML form for inserting a SEDE
   app.get('/sedeInsertForm', (req, res) => {
-    res.sendFile(__dirname + '\\views/sedeInsertForm.html'); // Provide the path to your sedeInsertForm.html file
+    res.sendFile(__dirname + '\\views\\views/sedeInsertForm.html'); // Provide the path to your sedeInsertForm.html file
   });
   
   // Handle the form submission for inserting a SEDE
@@ -328,6 +346,25 @@ app.get('/showDevTable', (req, res) => {
         } else {
             console.log("results:", result);
         }
+    });
+  });
+
+    // Serve the HTML form for inserting a Developer
+  app.get('/developerInsForm', (req, res) => {
+    res.sendFile(__dirname + '\\views/developerInsForm.html'); // Provide the path to your sedeInsertForm.html file
+  });
+  
+  // Handle the form submission for inserting a SEDE
+  app.post('/insertDeveloper', async (req, res) => {
+    const { dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo } = req.body;
+    connection.query("call crearDeveloper(?,?,?,?,?,?,?,?,?,?)", [dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo], function (err, result){
+        if (err) {
+            console.log("err:", err);
+        } else {
+            console.log("results:", result);
+        }
+        res.send('SEDE updated successfully!');
+
     });
   });
 
@@ -357,7 +394,7 @@ app.get('/showDevTable', (req, res) => {
 
 // Route to render the initial form to enter SEDE CUIT
 app.get('/updateSede', (req, res) => {
-    res.sendFile(__dirname + '\\views/enterSedeCUITForm.html');
+    res.sendFile(__dirname + '\\views\\views/enterSedeCUITForm.html');
   });
   
   // Route to handle the form submission and redirect to the update form
@@ -490,6 +527,67 @@ app.post('/submitUpdatedBug', (req, res) => {
   );
 });
 
+// SEDE
+// Route to handle the updated data submission
+app.post('/submitUpdatedSede', (req, res) => {
+  const { cuit, nombre_sede, direccion, ciudad, provincia, pais, codigoPostal, alquiler, capacidad } = req.body;
+
+  // SQL query to update the SEDE record
+  const updateSedeQuery = `
+    UPDATE SEDE
+    SET
+      nombre_sede = ?,
+      direccion = ?,
+      ciudad = ?,
+      provincia = ?,
+      pais = ?,
+      codigoPostal = ?,
+      alquiler = ?,
+      capacidad = ?
+    WHERE cuit = ?;
+  `;
+
+  // Execute the query with the form data
+  connection.query(
+    updateSedeQuery,
+    [nombre_sede, direccion, ciudad, provincia, pais, codigoPostal, alquiler, capacidad, cuit],
+    (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error('Error updating SEDE:', updateErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+
+      // Check if any record was updated
+      if (updateResults.affectedRows === 0) {
+        res.status(404).send('SEDE not found for update');
+        return;
+      }
+
+      res.send('SEDE updated successfully!');
+    }
+  );
+});
+
+//MODIFICAR UN DEVELOPER
+app.get('/developerModForm', (req, res) => {
+res.sendFile(__dirname + '/enterSedeCUITForm.html');
+});
+
+// Route to handle the form submission and redirect to the update form
+app.post('/enterSedeCUIT', (req, res) => {
+const { cuit } = req.body;
+
+// Check if cuit is provided
+if (!cuit) {
+  res.status(400).send('CUIT is required');
+  return;
+}
+
+// Redirect to the update form with the provided CUIT
+res.redirect(`/updateThisSede/${cuit}`);
+});
+
 //*************DELETES*************
 
 // Route to render the form to enter BUG ID for deletion
@@ -529,7 +627,42 @@ app.post('/deleteBug', (req, res) => {
   });
 });
 
+// Route to render the form to enter EQUIPAMIENTO ID for deletion
+app.get('/deleteEquipamiento', (req, res) => {
+  res.send(`
+    <h2>Delete EQUIPAMIENTO</h2>
+    <form action="/deleteEquipamiento" method="post">
+      <label for="id_equipamiento">ID Equipamiento:</label>
+      <input type="text" name="id_equipamiento" required><br>
+      <button type="submit">Delete EQUIPAMIENTO</button>
+    </form>
+  `);
+});
 
+// Route to handle the form submission and delete the EQUIPAMIENTO
+app.post('/deleteEquipamiento', (req, res) => {
+  const idEquipamiento = req.body.id_equipamiento;
+
+  // SQL query to delete the EQUIPAMIENTO record
+  const deleteEquipamientoQuery = 'DELETE FROM EQUIPAMIENTO WHERE id_equipamiento = ?';
+
+  // Execute the query with the provided ID Equipamiento
+  connection.query(deleteEquipamientoQuery, [idEquipamiento], (deleteErr, deleteResults) => {
+    if (deleteErr) {
+      console.error('Error deleting EQUIPAMIENTO:', deleteErr);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Check if any record was deleted
+    if (deleteResults.affectedRows === 0) {
+      res.status(404).send('EQUIPAMIENTO not found for deletion');
+      return;
+    }
+
+    res.send('EQUIPAMIENTO deleted successfully!');
+  });
+});
 
   // Start the server
   app.listen(port, () => {

@@ -74,7 +74,7 @@ connection.connect((err) => {
           <h1>Administrador: Bugs</h1>
           <button onclick="location.href='/bugInsertForm'">Nuevo</button>
           <button onclick="location.href='/updateBug'">Modificar</button>
-          <button onclick="location.href='/bugInsertForm'">Borrar</button>
+          <button onclick="location.href='/deleteBug'">Borrar</button>
         `);
       });
   
@@ -490,6 +490,44 @@ app.post('/submitUpdatedBug', (req, res) => {
   );
 });
 
+//*************DELETES*************
+
+// Route to render the form to enter BUG ID for deletion
+app.get('/deleteBug', (req, res) => {
+  res.send(`
+    <h2>Delete BUG</h2>
+    <form action="/deleteBug" method="post">
+      <label for="id_bug">ID Bug:</label>
+      <input type="text" name="id_bug" required><br>
+      <button type="submit">Delete BUG</button>
+    </form>
+  `);
+});
+
+// Route to handle the form submission and delete the BUG
+app.post('/deleteBug', (req, res) => {
+  const idBug = req.body.id_bug;
+
+  // SQL query to delete the BUG record
+  const deleteBugQuery = 'DELETE FROM BUG WHERE id_bug = ?';
+
+  // Execute the query with the provided ID Bug
+  connection.query(deleteBugQuery, [idBug], (deleteErr, deleteResults) => {
+    if (deleteErr) {
+      console.error('Error deleting BUG:', deleteErr);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Check if any record was deleted
+    if (deleteResults.affectedRows === 0) {
+      res.status(404).send('BUG not found for deletion');
+      return;
+    }
+
+    res.redirect('/admin');
+  });
+});
 
 
 

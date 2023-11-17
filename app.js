@@ -42,7 +42,7 @@ connection.connect((err) => {
   //*************MENU CONSULTAS*************
   app.get('/consultas', (req, res) => {
     res.send(`
-      <h1>Cosnultas</h1>
+      <h1>Consultas</h1>
       <button onclick="location.href='/showBugTable'">Show Bug Table</button>
       <button onclick="location.href='/showSedeTable'">Show Sede Table</button>
       <button onclick="location.href='/showDevTable'">Show Dev Table</button>
@@ -75,7 +75,7 @@ connection.connect((err) => {
           <h1>Administrador: Bugs</h1>
           <button onclick="location.href='/bugInsertForm'">Nuevo</button>
           <button onclick="location.href='/bugInsertForm'">Modificar</button>
-          <button onclick="location.href='/bugInsertForm'">Insertar</button>
+          <button onclick="location.href='/bugInsertForm'">Borrar</button>
         `);
       });
   
@@ -431,7 +431,46 @@ app.get('/updateSede', (req, res) => {
     });
   });
 
-
+  // Route to handle the updated data submission
+  app.post('/submitUpdatedSede', (req, res) => {
+    const { cuit, nombre_sede, direccion, ciudad, provincia, pais, codigoPostal, alquiler, capacidad } = req.body;
+  
+    // SQL query to update the SEDE record
+    const updateSedeQuery = `
+      UPDATE SEDE
+      SET
+        nombre_sede = ?,
+        direccion = ?,
+        ciudad = ?,
+        provincia = ?,
+        pais = ?,
+        codigoPostal = ?,
+        alquiler = ?,
+        capacidad = ?
+      WHERE cuit = ?;
+    `;
+  
+    // Execute the query with the form data
+    connection.query(
+      updateSedeQuery,
+      [nombre_sede, direccion, ciudad, provincia, pais, codigoPostal, alquiler, capacidad, cuit],
+      (updateErr, updateResults) => {
+        if (updateErr) {
+          console.error('Error updating SEDE:', updateErr);
+          res.status(500).send('Internal Server Error');
+          return;
+        }
+  
+        // Check if any record was updated
+        if (updateResults.affectedRows === 0) {
+          res.status(404).send('SEDE not found for update');
+          return;
+        }
+  
+        res.send('SEDE updated successfully!');
+      }
+    );
+  });
 
 
 

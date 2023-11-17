@@ -380,6 +380,8 @@ app.get('/showDevTable', (req, res) => {
         } else {
             console.log("results:", result);
         }
+        res.send('SEDE updated successfully!');
+
     });
   });
 
@@ -472,7 +474,24 @@ app.get('/updateSede', (req, res) => {
     );
   });
 
+//MODIFICAR UN DEVELOPER
+app.get('/developerModForm', (req, res) => {
+  res.sendFile(__dirname + '/enterSedeCUITForm.html');
+});
 
+// Route to handle the form submission and redirect to the update form
+app.post('/enterSedeCUIT', (req, res) => {
+  const { cuit } = req.body;
+
+  // Check if cuit is provided
+  if (!cuit) {
+    res.status(400).send('CUIT is required');
+    return;
+  }
+
+  // Redirect to the update form with the provided CUIT
+  res.redirect(`/updateThisSede/${cuit}`);
+});
 
 
 

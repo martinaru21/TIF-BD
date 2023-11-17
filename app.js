@@ -104,8 +104,7 @@ connection.connect((err) => {
     res.send(`
       <h1>Administrador: Developers</h1>
       <button onclick="location.href='/developerInsForm'">Nuevo</button>
-      <button onclick="location.href='/developerModForm'">Modificar</button>
-      <button onclick="location.href='/developerDelForm'">Eliminar</button>
+      <button onclick="location.href='/empleadoModForm'">Modificar</button>
     `);
   });
 
@@ -114,8 +113,7 @@ connection.connect((err) => {
     res.send(`
       <h1>Administrador: Designers</h1>
       <button onclick="location.href='/designerInsForm'">Nuevo</button>
-      <button onclick="location.href='/designerModForm'">Modificar</button>
-      <button onclick="location.href='/designerDelForm'">Eliminar</button>
+      <button onclick="location.href='/empleadoModForm'">Modificar</button>
     `);
   });
 
@@ -123,9 +121,8 @@ connection.connect((err) => {
 app.get('/artistaMenu', (req, res) => {
   res.send(`
     <h1>Administrador: Artistas</h1>
-    <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
-    <button onclick="location.href='/sedeInsertForm'">Modificar</button>
-    <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+    <button onclick="location.href='/artistaInsForm'">Nuevo</button>
+    <button onclick="location.href='/empleadoModForm'">Modificar</button>
   `);
 });
 
@@ -133,9 +130,8 @@ app.get('/artistaMenu', (req, res) => {
 app.get('/testerMenu', (req, res) => {
   res.send(`
     <h1>Administrador: Tester</h1>
-    <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
-    <button onclick="location.href='/sedeInsertForm'">Modificar</button>
-    <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+    <button onclick="location.href='/testerInsForm'">Nuevo</button>
+    <button onclick="location.href='/empleadoModForm'">Modificar</button>
   `);
 });
 
@@ -366,7 +362,7 @@ app.get('/showDevTable', (req, res) => {
     });
   });
 
-    // Serve the HTML form for inserting a Developer
+    // Insertar DEVELOPER
   app.get('/developerInsForm', (req, res) => {
     res.sendFile(__dirname + '\\views/developerInsForm.html'); // Provide the path to your sedeInsertForm.html file
   });
@@ -474,26 +470,97 @@ app.get('/updateSede', (req, res) => {
     );
   });
 
-//MODIFICAR UN DEVELOPER
-app.get('/developerModForm', (req, res) => {
-  res.sendFile(__dirname + '/enterSedeCUITForm.html');
+  
+// Modificar EMPLEADO
+app.get('/empleadoModForm', (req, res) => {
+  res.sendFile(__dirname + '\\views/enterUserEmpForm.html');
 });
 
 // Route to handle the form submission and redirect to the update form
-app.post('/enterSedeCUIT', (req, res) => {
-  const { cuit } = req.body;
+app.post('/enterUserEmp', (req, res) => {
+  const { user } = req.body;
 
-  // Check if cuit is provided
-  if (!cuit) {
-    res.status(400).send('CUIT is required');
+  // Verifica si se hay usuario
+  if (!user) {
+    res.status(400).send('Se necesita un Usuario');
     return;
   }
 
-  // Redirect to the update form with the provided CUIT
-  res.redirect(`/updateThisSede/${cuit}`);
+  // Redirect to the update form with the provided Usuario
+  res.redirect(`/updateThisEmpleado/${user}`);
 });
 
 
+  // Route to render the update form with EMPLEADO data
+  app.get('/updateThisEmpleado/:user', (req, res) => {
+    const user = req.params.user;
+  
+    // SQL query to check if the EMPLEADO with the given USER exists
+    const checkEmpleadoQuery = `SELECT * FROM EMPLEADO WHERE user = '${user}'`;
+  
+    connection.query(checkEmpleadoQuery, (checkErr, checkResults) => {
+      if (checkErr) {
+        console.error('Error chequeando al Empleado:', checkErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+  
+      // Check if the EMPLEADO with the given USER exists
+      if (checkResults.length === 0) {
+        res.status(404).send('No se encontro al Empleado');
+        return;
+      }
+      checkResults[0].fecha_nac = checkResults[0].fecha_nac.toLocaleDateString('se-SE');
+      checkResults[0].ingreso_empresa = checkResults[0].ingreso_empresa.toLocaleDateString('se-SE');
+      checkResults[0].ingreso_proyecto = checkResults[0].ingreso_proyecto.toLocaleDateString('se-SE');
+
+      // Render the update form with EMPLEADO data
+      res.render('updateEmpleadoForm', { empleadoData: checkResults[0] });
+    });
+  });
+
+  // Route to handle the updated data submission
+  app.post('/submitUpdatedEmpleado', (req, res) => {
+    const { dni, nombre_empleado, apellido_empleado, fecha_nac, ingreso_empresa, ingreso_proyecto, sueldo, rubro, seniority, user} = req.body;
+  
+    // SQL query to update the EMPLEADO record
+    const updateEmpleadoQuery = `
+      UPDATE EMPLEADO
+      SET
+      dni = ?,
+      nombre_empleado = ?,
+      apellido_empleado = ?,
+      fecha_nac = ?,
+      ingreso_empresa = ?,
+      ingreso_proyecto = ?,
+      sueldo = ?,
+      rubro = ?,
+      seniority = ?,
+      user = ?
+      WHERE user = ?;
+    `;
+  
+    // Execute the query with the form data
+    connection.query(
+      updateEmpleadoQuery,
+      [dni, nombre_empleado, apellido_empleado, fecha_nac, ingreso_empresa, ingreso_proyecto, sueldo, rubro, seniority, user, user],
+      (updateErr, updateResults) => {
+        if (updateErr) {
+          console.error('Error actualizando Empleado:', updateErr);
+          res.status(500).send('Internal Server Error');
+          return;
+        }
+  
+        // Check if any record was updated
+        if (updateResults.affectedRows === 0) {
+          res.status(404).send('No se encontro Empleado para actualizar');
+          return;
+        }
+  
+        res.send('Empleado modificado exitosamente!!!');
+      }
+    );
+  });
 
   // Start the server
   app.listen(port, () => {

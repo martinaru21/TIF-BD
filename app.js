@@ -437,6 +437,47 @@ app.get('/updateSede', (req, res) => {
     });
   });
 
+// Route to handle the updated data submission
+app.post('/submitUpdatedSede', (req, res) => {
+  const { cuit, nombre_sede, direccion, ciudad, provincia, pais, codigoPostal, alquiler, capacidad } = req.body;
+
+  // SQL query to update the SEDE record
+  const updateSedeQuery = `
+    UPDATE SEDE
+    SET
+      nombre_sede = ?,
+      direccion = ?,
+      ciudad = ?,
+      provincia = ?,
+      pais = ?,
+      codigoPostal = ?,
+      alquiler = ?,
+      capacidad = ?
+    WHERE cuit = ?;
+  `;
+
+  // Execute the query with the form data
+  connection.query(
+    updateSedeQuery,
+    [nombre_sede, direccion, ciudad, provincia, pais, codigoPostal, alquiler, capacidad, cuit],
+    (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error('Error updating SEDE:', updateErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+
+      // Check if any record was updated
+      if (updateResults.affectedRows === 0) {
+        res.status(404).send('SEDE not found for update');
+        return;
+      }
+
+      res.send('SEDE updated successfully!');
+    }
+  );
+});
+
 // BUG
 
 // Route to render the initial form to enter BUG ID
@@ -527,66 +568,6 @@ app.post('/submitUpdatedBug', (req, res) => {
   );
 });
 
-// SEDE
-// Route to handle the updated data submission
-app.post('/submitUpdatedSede', (req, res) => {
-  const { cuit, nombre_sede, direccion, ciudad, provincia, pais, codigoPostal, alquiler, capacidad } = req.body;
-
-  // SQL query to update the SEDE record
-  const updateSedeQuery = `
-    UPDATE SEDE
-    SET
-      nombre_sede = ?,
-      direccion = ?,
-      ciudad = ?,
-      provincia = ?,
-      pais = ?,
-      codigoPostal = ?,
-      alquiler = ?,
-      capacidad = ?
-    WHERE cuit = ?;
-  `;
-
-  // Execute the query with the form data
-  connection.query(
-    updateSedeQuery,
-    [nombre_sede, direccion, ciudad, provincia, pais, codigoPostal, alquiler, capacidad, cuit],
-    (updateErr, updateResults) => {
-      if (updateErr) {
-        console.error('Error updating SEDE:', updateErr);
-        res.status(500).send('Internal Server Error');
-        return;
-      }
-
-      // Check if any record was updated
-      if (updateResults.affectedRows === 0) {
-        res.status(404).send('SEDE not found for update');
-        return;
-      }
-
-      res.send('SEDE updated successfully!');
-    }
-  );
-});
-
-//MODIFICAR UN DEVELOPER
-app.get('/developerModForm', (req, res) => {
-res.sendFile(__dirname + '/enterSedeCUITForm.html');
-});
-
-// Route to handle the form submission and redirect to the update form
-app.post('/enterSedeCUIT', (req, res) => {
-const { cuit } = req.body;
-
-// Check if cuit is provided
-if (!cuit) {
-  res.status(400).send('CUIT is required');
-  return;
-}
-
-// Redirect to the update form with the provided CUIT
-res.redirect(`/updateThisSede/${cuit}`);
-});
 
 //*************DELETES*************
 

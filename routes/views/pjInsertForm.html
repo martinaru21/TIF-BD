@@ -1,34 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Insert Personaje Form</title>
-</head>
-<body>
-  <h2>Insert Data into Personaje Table</h2>
-  <form action="/inserts/insertPj" method="post">
-    <label for="id">ID:</label>
-    <input type="text" name="id" required><br>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Insert Personaje Form</title>
+  </head>
+  <body>
+    <h2>Insert Data into Personaje Table</h2>
+    <form action="/inserts/insertPj" method="post">
+      <label for="id">ID:</label>
+      <input type="text" name="id" required /><br />
 
-    <label for="nombre">Name:</label>
-    <input type="text" name="nombre" required><br>
+      <label for="nombre">Name:</label>
+      <input type="text" name="nombre" required /><br />
 
-    <label for="descripcion">Description:</label>
-    <textarea name="descripcion" rows="4" required></textarea><br>
+      <label for="descripcion">Description:</label>
+      <textarea name="descripcion" rows="4" required></textarea><br />
 
-    <label for="jugable">Playable:</label>
-    <input type="number" name="jugable" required><br>
+      <label for="jugable">Playable:</label>
+      <input type="number" name="jugable" required /><br />
 
-    <label for="grupoDes">Grupo Designer:</label>
-    <input type="text" name="grupoDes" required><br>
+      <label for="grupoDes">Grupo Designer:</label>
+      <input type="text" name="grupoDes" required /><br />
 
-    <label for="grupoDev">Grupo Developer:</label>
-    <input type="text" name="grupoDev" required><br>
+      <label for="grupoDev">Grupo Developer:</label>
+      <input type="text" name="grupoDev" required /><br />
 
-    <button type="submit">Insert Data</button>
-  </form>
-  <br>
-  <button onclick="location.href='/tables/showPjTable'">Back to Personaje Table</button>
-</body>
+      <button type="submit">Insert Data</button>
+    </form>
+    <br />
+    <button onclick="location.href='/tables/showPjTable'">
+      Back to Personaje Table
+    </button>
+  </body>
 </html>

@@ -1,44 +1,44 @@
-const express = require('express');
-const mysql = require('mysql2');
-const bodyParser = require('body-parser');
-const ejs = require('ejs');
+const express = require("express");
+const mysql = require("mysql2");
+const bodyParser = require("body-parser");
+const ejs = require("ejs");
 const app = express();
 const port = 3000;
-const connection = require('./connectMySQL');
-const principalRouter = require("./routes/principal.js")
-const tablasRouter = require("./routes/tablas.js")
-const insertsRouter = require("./routes/inserts.js")
-const updatesRouter = require("./routes/updates.js")
-const deletesRouter = require("./routes/deletes.js")
-const queriesRouter = require("./routes/queries.js")
+const connection = require("./connectMySQL");
+const principalRouter = require("./routes/principal.js");
+const tablasRouter = require("./routes/tablas.js");
+const insertsRouter = require("./routes/inserts.js");
+const updatesRouter = require("./routes/updates.js");
+const deletesRouter = require("./routes/deletes.js");
+const queriesRouter = require("./routes/queries.js");
 
-  // Set up body parser middleware to parse POST request data
-  app.use(bodyParser.urlencoded({ extended: true }));
-  app.use(bodyParser.json());
+// Set up body parser middleware to parse POST request data
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-  // Set the view engine to ejs
-  app.set('view engine', 'ejs');
+// Set the view engine to ejs
+app.set("view engine", "ejs");
 
-  //*************PAGINA PRINCIPAL*************
-  app.use('/', principalRouter);
+//*************PAGINA PRINCIPAL*************
+app.use("/", principalRouter);
 
-  //*************MOSTRAR TABLAS*************
-  app.use('/tables/', tablasRouter);
+//*************MOSTRAR TABLAS*************
+app.use("/tables/", tablasRouter);
 
-  //*************INSERTS*************
-  app.use('/inserts/', insertsRouter);
+//*************INSERTS*************
+app.use("/inserts/", insertsRouter);
 
-  //*************UPDATES*************
-  app.use('/updates/', updatesRouter);
+//*************UPDATES*************
+app.use("/updates/", updatesRouter);
 
-  //*************DELETES*************
-  app.use('/deletes/', deletesRouter);
+//*************DELETES*************
+app.use("/deletes/", deletesRouter);
 
-  //*************QUERIES*************
-  app.use('/queries/', queriesRouter);
+//*************QUERIES*************
+app.use("/queries/", queriesRouter);
 
-  // Start the server
-  app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-  });
-  exports.app = app;
+// Start the server
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
+exports.app = app;

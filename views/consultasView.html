@@ -25,7 +25,7 @@
     <button onclick="empleadosDeGrupo()">Ver Empleados por Grupo</button>
     <button onclick="verBugsFeatEsc()">Ver los Bugs de un Feature</button>
     <button onclick="verEscCompl()">Ver Escenario Completo</button>
-    <button onclick="search('*')">Button 11</button>
+    <button onclick="verPromedioFinalizacion()">Ver Promedio de Finalizacion</button>
     <button onclick="search('*')">Button 12</button>
     <button onclick="search('*')">Button 13</button>
     <button onclick="search('*')">Button 14</button>
@@ -241,6 +241,19 @@
           .catch((error) => console.error("Error:", error));
       }
 
+      function verPromedioFinalizacion() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/verPromedioFinalizacion?nombreGrDev=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTablePF(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+
       function displayTablePR(data) {
         console.log("Data received:", data);
 
@@ -259,6 +272,23 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
+      function displayTablePF(data) {
+        console.log("Data received:", data);
+
+        // Display the result in a table
+        let tableHtml = '<h2>Resultado</h2><table border="1">';
+        tableHtml += "<tr><th>Promedio</th></tr>";
+
+        // Iterate through the data and add rows to the table
+        data.forEach((row) => {
+          tableHtml += `<tr><td>${row.promedioFinDias}</td></tr>`;
+        });
+
+        tableHtml += "</table>";
+
+        // Display the table in a designated area on your page
+        document.getElementById("resultArea").innerHTML = tableHtml;
+      }
 
       function empleadosDeGrupo() {
         const searchTerm = encodeURIComponent(
@@ -327,6 +357,8 @@
         // Display the table in a designated area on your page
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
+
+
 
 
 

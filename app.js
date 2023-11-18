@@ -550,6 +550,58 @@ app.get('/showDevTable', (req, res) => {
   });
 });
 
+//*************TABLA SFX/MUSICA/SPRITE*************
+ // Route to show the SFX/MUSICA/SPRITE table
+ app.get('/showSmsTable', (req, res) => {
+
+  // Execute the query
+  connection.query('SELECT * FROM SPRITE_SFX_MUSICA INNER JOIN ARTE ON ARTE.id_arte = SPRITE_SFX_MUSICA.id_arte', function(err, results) {
+    if (err) {
+      console.error('Error executing MySQL query: ' + err.stack);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Render the data in an HTML table
+    const tableRows = results.map((row) => {
+      return `<tr>
+        <td>${row.id_arte}</td>
+        <td >${row.tipo}</td>
+        <td >${row.nombre_arte}</td>
+        <td >${row.direccion_NAS}</td>
+        <td>${row.grupo}</td>
+      </tr>`;
+    });
+
+    const tableHtml = `<style>
+      table {
+        border-collapse: collapse;
+        word-break: break-word;
+        width: 100%;
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+    <h2>Data from SPRITE_SFX_MUSICA Table</h2>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Tipo</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Artist Group</th>
+      </tr>
+      ${tableRows.join('')}
+    </table>`;
+
+    // Send the HTML response with the table
+    res.send(tableHtml);
+  });
+});
+
 
 //*************INSERTS*************
   // Serve the HTML form for inserting a SEDE
@@ -674,6 +726,30 @@ app.get('/showDevTable', (req, res) => {
           res.redirect('/featInsertForm')
       });
     });  
+
+// Serve the HTML form for inserting a SFX/MUSICA/SPRITE
+app.get('/smsInsertForm', (req, res) => {
+  res.sendFile(__dirname + '\\views/smsInsertForm.html'); // Provide the path to your smsInsertForm.html file
+});
+
+// Handle the form submission for inserting a SFX/MUSICA/SPRITE
+app.post('/insertSms', async (req, res) => {
+  var { id, tipo, nombre, direccion, grupo } = req.body;
+  if(tipo === 'Sprite') callArte = 'call crearSprite(?, ?, ?, ?)';
+  else if(tipo === 'Musica') callArte = 'call crearMusica(?, ?, ?, ?)';
+  else if(tipo === 'SFX') callArte = 'call crearSFX(?, ?, ?, ?)';
+  else res.status(400).send('Ingresar un Tipo Correcto (Sprite, Musica o SFX)');
+  connection.query(callArte, [id, nombre, direccion, grupo], function (err, result)
+  {
+      if (err) {
+          console.log("err:", err);
+      } else {
+          console.log("results:", result);
+      }
+
+      res.redirect('/smsInsertForm')
+  });
+});    
 
 //*************UPDATES*************
 //SEDE
@@ -1153,6 +1229,116 @@ app.post('/submitUpdatedFeat', (req, res) => {
 
     }
   );
+});
+
+// SFX/MUSICA/SPRITE
+
+// Route to render the initial form to enter SMS ID
+app.get('/updateSms', (req, res) => {
+  res.sendFile(__dirname + '\\views/enterSmsIDForm.html');
+});
+
+// Route to handle the form submission and redirect to the update form
+app.post('/enterSmsID', (req, res) => {
+  const { id_sms } = req.body;
+
+  // Check if id_sms is provided
+  if (!id_sms) {
+    res.status(400).send('SFX/MUSICA/SPRITE ID is required');
+    return;
+  }
+
+  // Redirect to the update form with the provided SMS ID
+  res.redirect(`/updateThisSms/${id_sms}`);
+});
+
+
+// Route to render the update form with SMS data
+app.get('/updateThisSms/:id_sms', (req, res) => {
+  const id_sms = req.params.id_sms;
+
+  // SQL query to check if the SMS with the given ID exists
+  const checkSMSQuery = `SELECT * FROM SPRITE_SFX_MUSICA INNER JOIN ARTE ON ARTE.id_arte = SPRITE_SFX_MUSICA.id_arte WHERE SPRITE_SFX_MUSICA.id_arte = ${'"' + id_sms + '"'}`;
+
+  connection.query(checkSMSQuery, (checkErr, checkResults) => {
+    if (checkErr) {
+      console.error('Error checking SFX/MUSICA/SPRITE:', checkErr);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Check if the SFX/MUSICA/SPRITE with the given ID exists
+    if (checkResults.length === 0) {
+      res.status(404).send('SFX/MUSICA/SPRITE not found');
+      return;
+    }
+
+    // Render the update form with SFX/MUSICA/SPRITE data
+    res.render('updateSmsForm', { smsData: checkResults[0] });
+  });
+});
+
+// Route to handle the updated data submission
+app.post('/submitUpdatedSms', (req, res) => {
+  var {id, tipo, nombre, direccion, grupo } = req.body;
+  // SQL query to update the PERSONAJE record
+  const updateSmsQuery = `
+    UPDATE SPRITE_SFX_MUSICA
+    SET
+      tipo = ?
+    WHERE id_arte = ?;
+  `;
+  const updateArtQuery = `
+  UPDATE ARTE
+  SET
+    id_arte = ?,
+    nombre_arte = ?,
+    direccion_NAS = ?,
+    grupo = ?
+  WHERE id_arte = ?;
+`;
+
+  // Execute the query with the form data
+  connection.query(
+    updateSmsQuery,
+    [tipo, id],
+    (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error('Error updating SFX/MUSICA/SPRITE:', updateErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+
+      // Check if any record was updated
+      if (updateResults.affectedRows === 0) {
+        res.status(404).send('SFX/MUSICA/SPRITE not found for update');
+        return;
+      }
+
+      connection.query(
+        updateArtQuery,
+        [id, nombre, direccion, grupo, id],
+        (updateErr, updateResults) => {
+          if (updateErr) {
+            console.error('Error updating SFX/MUSICA/SPRITE:', updateErr);
+            res.status(500).send('Internal Server Error');
+            return;
+          }
+    
+          // Check if any record was updated
+          if (updateResults.affectedRows === 0) {
+            res.status(404).send('SFX/MUSICA/SPRITE not found for update');
+            return;
+          }
+    
+          res.send(`
+          <h1>Success!</h1>
+          <button onclick="location.href='/showSmsTable'">Back to SFX/MUSICA/SPRITE Table</button>
+          <button onclick="location.href='/admin'">Back to Admin</button>
+          `);
+    
+        });
+    });
 });
 
 

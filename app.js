@@ -2,8 +2,6 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
-const path = require('path');
-const fs = require('fs');
 
 const app = express();
 const port = 3000;
@@ -43,21 +41,13 @@ connection.connect((err) => {
 
   //*************MENU CONSULTAS*************
   app.get('/consultas', (req, res) => {
-    // Read the contents of the HTML file
-    const filePath = path.join(__dirname + '\\views/searchAndButtons.html');
-    
-    fs.readFile('views\\consultasView.html', 'utf8', (err, htmlContent) => {
-      if (err) {
-        console.error('Error reading HTML file:', err);
-        res.status(500).send('Internal Server Error');
-        return;
-      }
-  
-      // Send the combined HTML content as the response
-      res.send(htmlContent);
-    });
+    res.send(`
+      <h1>Consultas</h1>
+      <button onclick="location.href='/showBugTable'">Show Bug Table</button>
+      <button onclick="location.href='/showSedeTable'">Show Sede Table</button>
+      <button onclick="location.href='/showDevTable'">Show Dev Table</button>
+    `);
   });
-
 
   //*************MENU ADMIN*************
   app.get('/admin', (req, res) => {
@@ -98,7 +88,7 @@ connection.connect((err) => {
       <h1>Administrador: Sedes</h1>
       <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
       <button onclick="location.href='/updateSede'">Modificar</button>
-      <button onclick="location.href='/deleteSede'">Borrar</button>
+      <button onclick="location.href='/sedeInsertForm'">Insertar</button>
     `);
   });
 
@@ -108,7 +98,7 @@ connection.connect((err) => {
           <h1>Administrador: Equipamiento</h1>
           <button onclick="location.href='/sedeInsertForm'">Nuevo</button>
           <button onclick="location.href='/sedeInsertForm'">Modificar</button>
-          <button onclick="location.href='/deleteEquipamiento'">Borrar</button>
+          <button onclick="location.href='/sedeInsertForm'">Insertar</button>
         `);
       });
 
@@ -545,7 +535,7 @@ app.post('/insertGrupoDeveloper', async (req, res) => {
 //*************UPDATES*************
 // Route to render the initial form to enter SEDE CUIT
 app.get('/updateSede', (req, res) => {
-    res.sendFile(__dirname + '\\views/enterSedeCUITForm.html');
+    res.sendFile(__dirname + '/enterSedeCUITForm.html');
   });
   
   // Route to handle the form submission and redirect to the update form
@@ -564,20 +554,27 @@ app.get('/updateSede', (req, res) => {
   
 
   // Route to render the update form with SEDE data
-  app.get('/verArteEncargado', (req, res) => {
-    const nombreEsc = req.query.nombreEsc;
+  app.get('/updateThisSede/:cuit', (req, res) => {
+    const cuit = req.params.cuit;
   
-    // Execute the stored procedure
-    const query = 'CALL verArteEncargado(?)';
-    connection.query(query, [nombreEsc], (err, results) => {
-      if (err) {
-        console.error('Error executing stored procedure:', err);
+    // SQL query to check if the SEDE with the given CUIT exists
+    const checkSedeQuery = `SELECT * FROM SEDE WHERE cuit = ${cuit}`;
+  
+    connection.query(checkSedeQuery, (checkErr, checkResults) => {
+      if (checkErr) {
+        console.error('Error checking SEDE:', checkErr);
         res.status(500).send('Internal Server Error');
         return;
       }
   
-      // Send the data as JSON
-      res.json(results[0]);  // Assuming results is an array of objects
+      // Check if the SEDE with the given CUIT exists
+      if (checkResults.length === 0) {
+        res.status(404).send('SEDE not found');
+        return;
+      }
+  
+      // Render the update form with SEDE data
+      res.render('updateSedeForm', { sedeData: checkResults[0] });
     });
   });
 
@@ -640,191 +637,6 @@ app.post('/enterUserEmp', (req, res) => {
 
   // Redirect to the update form with the provided Usuario
   res.redirect(`/updateThisEmpleado/${user}`);
-});
-
-//*************DELETES*************
-
-// Route to render the form to enter EQUIPAMIENTO ID for deletion
-app.get('/deleteEquipamiento', (req, res) => {
-    res.send(`
-      <h2>Delete EQUIPAMIENTO</h2>
-      <form action="/deleteEquipamiento" method="post">
-        <label for="id_equipamiento">ID Equipamiento:</label>
-        <input type="text" name="id_equipamiento" required><br>
-        <button type="submit">Delete EQUIPAMIENTO</button>
-      </form>
-    `);
-  });
-  
-  // Route to handle the form submission and delete the EQUIPAMIENTO
-  app.post('/deleteEquipamiento', (req, res) => {
-    const idEquipamiento = req.body.id_equipamiento;
-  
-    // SQL query to delete the EQUIPAMIENTO record
-    const deleteEquipamientoQuery = 'DELETE FROM EQUIPAMIENTO WHERE id_equipamiento = ?';
-  
-    // Execute the query with the provided ID Equipamiento
-    connection.query(deleteEquipamientoQuery, [idEquipamiento], (deleteErr, deleteResults) => {
-      if (deleteErr) {
-        console.error('Error deleting EQUIPAMIENTO:', deleteErr);
-        res.status(500).send('Internal Server Error');
-        return;
-      }
-  
-      // Check if any record was deleted
-      if (deleteResults.affectedRows === 0) {
-        res.status(404).send('EQUIPAMIENTO not found for deletion');
-        return;
-      }
-  
-      res.send('EQUIPAMIENTO deleted successfully!');
-    });
-  });
-  
-
-
-
-
-//*************CONSULTAS*************
-app.get('/verArteEncargado', (req, res) => {
-    const nombreEsc = req.query.nombreEsc;
-  
-    // Execute the stored procedure
-    const query = 'CALL verArteEncargado(?)';
-    connection.query(query, [nombreEsc], (err, results) => {
-      if (err) {
-        console.error('Error executing stored procedure:', err);
-        res.status(500).send('Internal Server Error');
-        return;
-      }
-      const data = results[0];
-      res.json(data);
-    });
-  });
-
-app.get('/verReporter', (req, res) => {
-  const titulo = req.query.titulo;
-
-  // Execute the stored procedure
-  const query = 'CALL verReporter(?)';
-  connection.query(query, [titulo], (err, results) => {
-    if (err) {
-      console.error('Error executing stored procedure:', err);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    const data = results[0];
-    res.json(data);
-  });
-});
-
-app.get('/verAnimadoresEncargados', (req, res) => {
-  const nombreEsc = req.query.nombreEsc;
-
-  // Execute the stored procedure
-  const query = 'CALL verAnimadoresEncargados(?)';
-  connection.query(query, [nombreEsc], (err, results) => {
-    if (err) {
-      console.error('Error executing stored procedure:', err);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    const data = results[0];
-    res.json(data);
-  });
-});
-
-app.get('/verMiembrosDesigners', (req, res) => {
-  const nombreGrDes = req.query.nombreGrDes;
-
-  // Execute the stored procedure
-  const query = 'CALL verMiembrosDesigners(?)';
-  connection.query(query, [nombreGrDes], (err, results) => {
-    if (err) {
-      console.error('Error executing stored procedure:', err);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    const data = results[0];
-    res.json(data);
-  });
-});
-
-app.get('/verBugsReportados', (req, res) => {
-  const username = req.query.username;
-
-  // Execute the stored procedure
-  const query = 'CALL verBugsReportados(?)';
-  connection.query(query, [username], (err, results) => {
-    if (err) {
-      console.error('Error executing stored procedure:', err);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    const data = results[0];
-    res.json(data);
-  });
-});
-
-app.get('/verOcupacionEmpleados', async (req, res) => {
-  const query = 'CALL verOcupacionEmpleados()';
-  connection.query(query, (err, results) => {
-    if (err) {
-      console.error('Error executing stored procedure:', err);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    const data = results[0];
-    res.json(data);
-  });
-});
-
-app.get('/verPromedioResolucion', (req, res) => {
-  const nombreGrDev = req.query.nombreGrDev;
-
-  // Execute the stored procedure
-  const query = 'CALL verPromedioResolucion(?)';
-  connection.query(query, [nombreGrDev], (err, results) => {
-    if (err) {
-      console.error('Error executing stored procedure:', err);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    const data = results[0];
-    res.json(data);
-  });
-});
-
-app.get('/empleadosDeGrupo', (req, res) => {
-  const nombre = req.query.nombre;
-
-  // Execute the stored procedure
-  const query = 'CALL empleadosDeGrupo(?)';
-  connection.query(query, [nombre], (err, results) => {
-    if (err) {
-      console.error('Error executing stored procedure:', err);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    const data = results[0];
-    res.json(data);
-  });
-});
-
-app.get('/verBugsFeatEsc', (req, res) => {
-  const id_fe = req.query.id_fe;
-
-  // Execute the stored procedure
-  const query = 'CALL verBugsFeatEsc(?)';
-  connection.query(query, [id_fe], (err, results) => {
-    if (err) {
-      console.error('Error executing stored procedure:', err);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-    const data = results[0];
-    res.json(data);
-  });
 });
 
 

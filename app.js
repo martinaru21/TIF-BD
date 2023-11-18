@@ -681,6 +681,22 @@ app.get('/verBugsFeatEsc', (req, res) => {
   });
 });
 
+app.get('/verEscCompl', (req, res) => {
+  const grupo_fe = req.query.grupo_fe;
+
+  // Execute the stored procedure
+  const query = 'CALL verEscCompl(?)';
+  connection.query(query, [grupo_fe], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
 
 
   // Start the server

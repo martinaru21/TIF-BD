@@ -60,6 +60,9 @@ connection.connect((err) => {
       <button onclick="location.href='/designerMenu'">Designers</button>
       <button onclick="location.href='/artistaMenu'">Artistas</button>
       <button onclick="location.href='/testerMenu'">Testers</button>
+      <button onclick="location.href='/grupoDeveloperMenu'">Grupos de Developers</button>
+      <button onclick="location.href='/grupoDesignerMenu'">Grupos de Designers</button>
+      <button onclick="location.href='/grupoArtistaMenu'">Grupos de Artistas</button>
       <button onclick="location.href='/assetMenu'">Assets</button>
       <button onclick="location.href='/featMenu'">Features</button>
       <button onclick="location.href='/pjMenu'">Personajes</button>
@@ -135,6 +138,29 @@ app.get('/testerMenu', (req, res) => {
   `);
 });
 
+//*************MENU GRUPO DEVELOPERS*************
+app.get('/grupoDeveloperMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: Grupos de Developers</h1>
+    <button onclick="location.href='/grupoDevInsForm'">Nuevo</button>
+  `);
+});
+
+//*************MENU GRUPO DESIGNERS*************
+app.get('/grupoDesignerMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: Grupos de Designers</h1>
+    <button onclick="location.href='/grupoDesInsForm'">Nuevo</button>
+  `);
+});
+
+//*************MENU GRUPO ARTISTAS*************
+app.get('/grupoArtistaMenu', (req, res) => {
+res.send(`
+  <h1>Administrador: Grupos de Artistas</h1>
+  <button onclick="location.href='/grupoArtInsForm'">Nuevo</button>
+`);
+});
 
 //*************MOSTRAR TABLAS*************
   
@@ -367,7 +393,7 @@ app.get('/showDevTable', (req, res) => {
     res.sendFile(__dirname + '\\views/developerInsForm.html'); // Provide the path to your sedeInsertForm.html file
   });
   
-  // Handle the form submission for inserting a SEDE
+  // Handle the form submission for inserting a DEVELOPER
   app.post('/insertDeveloper', async (req, res) => {
     const { dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo } = req.body;
     connection.query("call crearDeveloper(?,?,?,?,?,?,?,?,?,?)", [dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo], function (err, result){
@@ -376,11 +402,134 @@ app.get('/showDevTable', (req, res) => {
         } else {
             console.log("results:", result);
         }
-        res.send('SEDE updated successfully!');
+        res.send('Developer creado con exito!');
 
     });
   });
 
+
+    // Insertar ARTISTAS
+      app.get('/artistaInsForm', (req, res) => {
+        res.sendFile(__dirname + '\\views/artistaInsForm.html'); // Provide the path to your sedeInsertForm.html file
+      });
+      
+      // Handle the form submission for inserting a ARTISTA
+      app.post('/insertArtista', async (req, res) => {
+        const { dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo } = req.body;
+        connection.query("call crearArtista(?,?,?,?,?,?,?,?,?,?)", [dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo], function (err, result){
+            if (err) {
+                console.log("err:", err);
+            } else {
+                console.log("results:", result);
+            }
+            res.send('Artista creado con exito!');
+    
+        });
+      });
+
+
+      // Insertar TESTER
+     app.get('/testerInsForm', (req, res) => {
+      res.sendFile(__dirname + '\\views/testerInsForm.html'); // Provide the path to your sedeInsertForm.html file
+    });
+    
+    // Handle the form submission for inserting a DESIGNER
+    app.post('/insertTester', async (req, res) => {
+      const { dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority } = req.body;
+      connection.query("call crearTester(?,?,?,?,?,?,?,?,?)", [dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority], function (err, result){
+          if (err) {
+              console.log("err:", err);
+          } else {
+              console.log("results:", result);
+          }
+          res.send('Tester creado con exito!');
+  
+      });
+    });
+
+
+     // Insertar DESIGNERS
+     app.get('/designerInsForm', (req, res) => {
+      res.sendFile(__dirname + '\\views/designerInsForm.html'); // Provide the path to your sedeInsertForm.html file
+    });
+    
+    // Handle the form submission for inserting a DESIGNER
+    app.post('/insertDesigner', async (req, res) => {
+      const { dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo } = req.body;
+      connection.query("call crearDesigner(?,?,?,?,?,?,?,?,?,?)", [dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo], function (err, result){
+          if (err) {
+              console.log("err:", err);
+          } else {
+              console.log("results:", result);
+          }
+          res.send('Designer creado con exito!');
+  
+      });
+    });
+
+
+    // Insertar GRUPO DE ARTISTAS
+    app.get('/grupoArtInsForm', (req, res) => {
+      res.sendFile(__dirname + '\\views/grupoArtInsForm.html'); // Provide the path to your sedeInsertForm.html file
+    });
+    
+    // Handle the form submission for inserting a GRUPO DE ARTISTAS
+    app.post('/insertGrupoArtista', async (req, res) => {
+      const { nombre } = req.body;
+      connection.query("call crearGrupoArtista(?)", [nombre], function (err, result){
+          if (err) {
+              console.log("err:", err);
+          } else {
+              console.log("results:", result);
+          }
+          res.send('Grupo de Artistas creado con exito!');
+  
+      });
+    });
+
+
+    // Insertar GRUPO DE DEVELOPERS
+app.get('/grupoDevInsForm', (req, res) => {
+  res.sendFile(__dirname + '\\views/grupoDevInsForm.html'); // Provide the path to your sedeInsertForm.html file
+});
+
+
+
+
+// Insertar GRUPO DE DEVELOPERS
+app.get('/grupoDesInsForm', (req, res) => {
+  res.sendFile(__dirname + '\\views/grupoDesInsForm.html'); // Provide the path to your sedeInsertForm.html file
+});
+
+// Handle the form submission for inserting a GRUPO DE DesignerS
+app.post('/insertGrupoDesigner', async (req, res) => {
+  const { nombre } = req.body;
+  connection.query("call crearGrupoDesigner(?)", [nombre], function (err, result){
+      if (err) {
+          console.log("err:", err);
+      } else {
+          console.log("results:", result);
+      }
+      res.send('Grupo de Designers creado con exito!');
+
+  });
+});
+
+
+
+// Handle the form submission for inserting a GRUPO DE DEVELOPERS
+app.post('/insertGrupoDeveloper', async (req, res) => {
+  const { nombre } = req.body;
+  connection.query("call crearGrupoDeveloper(?)", [nombre], function (err, result){
+      if (err) {
+          console.log("err:", err);
+      } else {
+          console.log("results:", result);
+      }
+      res.send('Grupo de Developers creado con exito!');
+
+  });
+});
 
 
 //*************UPDATES*************

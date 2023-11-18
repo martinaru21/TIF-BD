@@ -24,7 +24,7 @@
     <button onclick="verPromedioResolucion()">Ver Promedio de Resolucion</button>
     <button onclick="empleadosDeGrupo()">Ver Empleados por Grupo</button>
     <button onclick="verBugsFeatEsc()">Ver los Bugs de un Feature</button>
-    <button onclick="verEscCompl()">Button 10</button>
+    <button onclick="verEscCompl()">Ver Escenario Completo</button>
     <button onclick="search('*')">Button 11</button>
     <button onclick="search('*')">Button 12</button>
     <button onclick="search('*')">Button 13</button>
@@ -300,24 +300,25 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/empleadosDeGrupo?grupo_fe=${searchTerm}`)
+        fetch(`/verEscCompl?grupo_fe=${searchTerm}`)
           .then((response) => response.json())
-          .then((data) => displayTableEG(data))
+          .then((data) => displayTableEC(data))
           .catch((error) => console.error("Error:", error));
       }
 
-      function displayTableEG(data) {
+      function displayTableEC(data) {
         console.log("Data received:", data);
 
         // Display the result in a table
         let tableHtml = '<h2>Resultado</h2><table border="1">';
-        tableHtml += "<tr><th>Nombre</th><th>Apellido</th></tr>";
+        tableHtml += "<tr><th>ID</th><th>Nombre</th><th>Solucionado</th></tr>";
 
         // Iterate through the data and add rows to the table
         data.forEach((row) => {
           tableHtml += `<tr>`;
-          tableHtml += `<td>${row.NOMBRE}</td>`;
-          tableHtml += `<td>${row.APELLIDO}</td>`;
+          tableHtml += `<td>${row.id_escenario}</td>`;
+          tableHtml += `<td>${row.nombre_escenario}</td>`;
+          tableHtml += `<td>${row.estado}</td>`;
           tableHtml += `</tr>`;
         });
 

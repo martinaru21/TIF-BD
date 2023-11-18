@@ -7,7 +7,7 @@
 </head>
 <body>
   <h2>Insert Data into SEDE Table</h2>
-  <form action="/insertSede" method="post">
+  <form action="/inserts/insertSede" method="post">
     <label for="cuit">CUIT:</label>
     <input type="text" name="cuit" required><br>
 
@@ -38,6 +38,6 @@
     <button type="submit">Insert Data</button>
   </form>
   <br>
-  <button onclick="location.href='/showSedeTable'">Back to SEDE Table</button>
+  <button onclick="location.href='/tables/showSedeTable'">Back to SEDE Table</button>
 </body>
 </html>

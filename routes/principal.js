@@ -2,12 +2,15 @@ const express = require('express');
 const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 const ejs = require('ejs');
+const path = require('path');
+const fs = require('fs');
 const app = express();
 const router = express.Router();
 const tablasRouter = require("../routes/tablas.js")
 const insertsRouter = require("../routes/inserts.js")
 const updatesRouter = require("../routes/updates.js")
-const deletesRouter = require("../routes/deletes/deletes.js")
+const deletesRouter = require("../routes/deletes.js")
+const queriesRouter = require("../routes/queries.js")
 
 //*************PAGINA PRINCIPAL*************
 router.get('/', (req, res) => {
@@ -20,18 +23,19 @@ router.get('/', (req, res) => {
 
 //*************MENU CONSULTAS*************
 router.get('/consultas', (req, res) => {
-  res.send(`
-    <h1>Consultas</h1>
-    <button onclick="location.href='/tables/showBugTable'">Show Bug Table</button>
-    <button onclick="location.href='/tables/showSedeTable'">Show Sede Table</button>
-    <button onclick="location.href='/tables/showDevTable'">Show Dev Table</button>
-    <button onclick="location.href='/tables/showEquipamientoTable'">Show Equipamiento Table</button>
-    <button onclick="location.href='/tables/showAssetTable'">Show Asset Table</button>
-    <button onclick="location.href='/tables/showPjTable'">Show Personaje Table</button>
-    <button onclick="location.href='/tables/showSmsTable'">Show SFX/Musica/Sprites Table</button>
-    <button onclick="location.href='/tables/showAnimTable'">Show Animaciones Table</button>
+  // Read the contents of the HTML file
+  const filePath = path.join(__dirname + '\\views/searchAndButtons.html');
+  
+  fs.readFile('views\\consultasView.html', 'utf8', (err, htmlContent) => {
+    if (err) {
+      console.error('Error reading HTML file:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
 
-  `);
+    // Send the combined HTML content as the response
+    res.send(htmlContent);
+  });
 });
 
 //*************MENU ADMIN*************
@@ -45,6 +49,9 @@ router.get('/admin', (req, res) => {
     <button onclick="location.href='/designerMenu'">Designers</button>
     <button onclick="location.href='/artistaMenu'">Artistas</button>
     <button onclick="location.href='/testerMenu'">Testers</button>
+    <button onclick="location.href='/grupoDeveloperMenu'">Grupos de Developers</button>
+    <button onclick="location.href='/grupoDesignerMenu'">Grupos de Designers</button>
+    <button onclick="location.href='/grupoArtistaMenu'">Grupos de Artistas</button>
     <button onclick="location.href='/assetMenu'">Assets</button>
     <button onclick="location.href='/pjMenu'">Personajes</button>
     <button onclick="location.href='/featMenu'">Features</button>
@@ -89,8 +96,7 @@ router.get('/developerMenu', (req, res) => {
   res.send(`
     <h1>Administrador: Developers</h1>
     <button onclick="location.href='/inserts/developerInsForm'">Nuevo</button>
-    <button onclick="location.href='/updates/developerModForm'">Modificar</button>
-    <button onclick="location.href='/deletes/developerDelForm'">Eliminar</button>
+    <button onclick="location.href='/updates/empleadoModForm'">Modificar</button>
   `);
 });
 
@@ -99,8 +105,7 @@ router.get('/designerMenu', (req, res) => {
   res.send(`
     <h1>Administrador: Designers</h1>
     <button onclick="location.href='/inserts/designerInsForm'">Nuevo</button>
-    <button onclick="location.href='/designerModForm'">Modificar</button>
-    <button onclick="location.href='/designerDelForm'">Eliminar</button>
+    <button onclick="location.href='/updates/empleadoModForm'">Modificar</button>
   `);
 });
 
@@ -108,19 +113,41 @@ router.get('/designerMenu', (req, res) => {
 router.get('/artistaMenu', (req, res) => {
 res.send(`
   <h1>Administrador: Artistas</h1>
-  <button onclick="location.href='/inserts/sedeInsertForm'">Nuevo</button>
-  <button onclick="location.href='/sedeInsertForm'">Modificar</button>
-  <button onclick="location.href='/sedeInsertForm'">Insertar</button>
-`);
+  <button onclick="location.href='/inserts/artistaInsForm'">Nuevo</button>
+  <button onclick="location.href='/updates/empleadoModForm'">Modificar</button>
+  `);
 });
 
 //*************MENU TESTERS*************
 router.get('/testerMenu', (req, res) => {
 res.send(`
   <h1>Administrador: Tester</h1>
-  <button onclick="location.href='/inserts/sedeInsertForm'">Nuevo</button>
-  <button onclick="location.href='/sedeInsertForm'">Modificar</button>
-  <button onclick="location.href='/sedeInsertForm'">Insertar</button>
+  <button onclick="location.href='/inserts/testerInsForm'">Nuevo</button>
+  <button onclick="location.href='/updates/empleadoModForm'">Modificar</button>
+`);
+});
+
+//*************MENU GRUPO DEVELOPERS*************
+router.get('/grupoDeveloperMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: Grupos de Developers</h1>
+    <button onclick="location.href='/inserts/grupoDevInsForm'">Nuevo</button>
+  `);
+});
+
+//*************MENU GRUPO DESIGNERS*************
+router.get('/grupoDesignerMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: Grupos de Designers</h1>
+    <button onclick="location.href='/inserts/grupoDesInsForm'">Nuevo</button>
+  `);
+});
+
+//*************MENU GRUPO ARTISTAS*************
+router.get('/grupoArtistaMenu', (req, res) => {
+res.send(`
+  <h1>Administrador: Grupos de Artistas</h1>
+  <button onclick="location.href='/inserts/grupoArtInsForm'">Nuevo</button>
 `);
 });
 
@@ -173,5 +200,6 @@ router.use('/tables/', tablasRouter);
 router.use('/inserts/', insertsRouter);
 router.use('/updates/', updatesRouter);
 router.use('/deletes/', deletesRouter);
+router.use('/queries/', queriesRouter);
 
 module.exports = router;

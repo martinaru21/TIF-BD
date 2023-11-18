@@ -46,6 +46,122 @@ const connection = require('../connectMySQL');
     });
   });
 
+  // Insertar ARTISTAS
+  router.get('/artistaInsForm', (req, res) => {
+    res.sendFile(__dirname + '\\views/artistaInsForm.html'); // Provide the path to your sedeInsertForm.html file
+  });
+  
+  // Handle the form submission for inserting a ARTISTA
+  router.post('/insertArtista', async (req, res) => {
+    const { dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo } = req.body;
+    connection.query("call crearArtista(?,?,?,?,?,?,?,?,?,?)", [dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo], function (err, result){
+        if (err) {
+            console.log("err:", err);
+        } else {
+            console.log("results:", result);
+        }
+        res.redirect('/inserts/artistaInsForm')
+
+    });
+  }); 
+
+  // Insertar TESTER
+  router.get('/testerInsForm', (req, res) => {
+    res.sendFile(__dirname + '\\views/testerInsForm.html'); // Provide the path to your sedeInsertForm.html file
+  });
+  
+  // Handle the form submission for inserting a DESIGNER
+  router.post('/insertTester', async (req, res) => {
+    const { dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority } = req.body;
+    connection.query("call crearTester(?,?,?,?,?,?,?,?,?)", [dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority], function (err, result){
+        if (err) {
+            console.log("err:", err);
+        } else {
+            console.log("results:", result);
+        }
+        res.redirect('/inserts/testerInsForm')
+
+    });
+  });
+
+  // Insertar DESIGNERS
+  router.get('/designerInsForm', (req, res) => {
+    res.sendFile(__dirname + '\\views/designerInsForm.html'); // Provide the path to your sedeInsertForm.html file
+  });
+  
+  // Handle the form submission for inserting a DESIGNER
+  router.post('/insertDesigner', async (req, res) => {
+    const { dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo } = req.body;
+    connection.query("call crearDesigner(?,?,?,?,?,?,?,?,?,?)", [dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo], function (err, result){
+        if (err) {
+            console.log("err:", err);
+        } else {
+            console.log("results:", result);
+        }
+        res.redirect('/inserts/designerInsForm')
+
+    });
+  });
+
+// Insertar GRUPO DE ARTISTAS
+router.get('/grupoArtInsForm', (req, res) => {
+  res.sendFile(__dirname + '\\views/grupoArtInsForm.html'); // Provide the path to your sedeInsertForm.html file
+});
+
+// Handle the form submission for inserting a GRUPO DE ARTISTAS
+router.post('/insertGrupoArtista', async (req, res) => {
+  const { nombre } = req.body;
+  connection.query("call crearGrupoArtista(?)", [nombre], function (err, result){
+      if (err) {
+          console.log("err:", err);
+      } else {
+          console.log("results:", result);
+      }
+      res.redirect('/inserts/grupoArtInsForm')
+
+  });
+});
+
+
+// Insertar GRUPO DE DEVELOPERS
+router.get('/grupoDevInsForm', (req, res) => {
+  res.sendFile(__dirname + '\\views/grupoDevInsForm.html'); // Provide the path to your sedeInsertForm.html file
+});
+
+// Handle the form submission for inserting a GRUPO DE DEVELOPERS
+router.post('/insertGrupoDeveloper', async (req, res) => {
+  const { nombre } = req.body;
+  connection.query("call crearGrupoDeveloper(?)", [nombre], function (err, result){
+      if (err) {
+          console.log("err:", err);
+      } else {
+          console.log("results:", result);
+      }
+      res.redirect('/inserts/grupoDevInsForm')
+
+  });
+});
+
+// Insertar GRUPO DE DESIGNERS
+router.get('/grupoDesInsForm', (req, res) => {
+  res.sendFile(__dirname + '\\views/grupoDesInsForm.html'); // Provide the path to your sedeInsertForm.html file
+});
+
+// Handle the form submission for inserting a GRUPO DE DesignerS
+router.post('/insertGrupoDesigner', async (req, res) => {
+  const { nombre } = req.body;
+  connection.query("call crearGrupoDesigner(?)", [nombre], function (err, result){
+      if (err) {
+          console.log("err:", err);
+      } else {
+          console.log("results:", result);
+      }
+      res.redirect('/inserts/grupoDesInsForm')
+
+  });
+});
+
+
   // Serve the HTML form for inserting a bug
   router.get('/bugInsertForm', (req, res) => {
     res.sendFile(__dirname + '\\views/bugInsertForm.html'); // Provide the path to your bugInsertForm.html file

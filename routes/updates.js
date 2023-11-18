@@ -99,6 +99,102 @@ router.post('/submitUpdatedSede', (req, res) => {
   );
 });
 
+// Modificar EMPLEADO
+app.get('/empleadoModForm', (req, res) => {
+  res.sendFile(__dirname + '\\views/enterUserEmpForm.html');
+});
+
+// Route to handle the form submission and redirect to the update form
+app.post('/enterUserEmp', (req, res) => {
+  const { user } = req.body;
+
+  // Verifica si se hay usuario
+  if (!user) {
+    res.status(400).send('Se necesita un Usuario');
+    return;
+  }
+
+  // Redirect to the update form with the provided Usuario
+  res.redirect(`/updates/updateThisEmpleado/${user}`);
+});
+
+
+  // Route to render the update form with EMPLEADO data
+  app.get('/updateThisEmpleado/:user', (req, res) => {
+    const user = req.params.user;
+  
+    // SQL query to check if the EMPLEADO with the given USER exists
+    const checkEmpleadoQuery = `SELECT * FROM EMPLEADO WHERE user = '${user}'`;
+  
+    connection.query(checkEmpleadoQuery, (checkErr, checkResults) => {
+      if (checkErr) {
+        console.error('Error chequeando al Empleado:', checkErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+  
+      // Check if the EMPLEADO with the given USER exists
+      if (checkResults.length === 0) {
+        res.status(404).send('No se encontro al Empleado');
+        return;
+      }
+      checkResults[0].fecha_nac = checkResults[0].fecha_nac.toLocaleDateString('se-SE');
+      checkResults[0].ingreso_empresa = checkResults[0].ingreso_empresa.toLocaleDateString('se-SE');
+      checkResults[0].ingreso_proyecto = checkResults[0].ingreso_proyecto.toLocaleDateString('se-SE');
+
+      // Render the update form with EMPLEADO data
+      res.render('updateEmpleadoForm', { empleadoData: checkResults[0] });
+    });
+  });
+
+  // Route to handle the updated data submission
+  app.post('/submitUpdatedEmpleado', (req, res) => {
+    const { dni, nombre_empleado, apellido_empleado, fecha_nac, ingreso_empresa, ingreso_proyecto, sueldo, rubro, seniority, user} = req.body;
+  
+    // SQL query to update the EMPLEADO record
+    const updateEmpleadoQuery = `
+      UPDATE EMPLEADO
+      SET
+      dni = ?,
+      nombre_empleado = ?,
+      apellido_empleado = ?,
+      fecha_nac = ?,
+      ingreso_empresa = ?,
+      ingreso_proyecto = ?,
+      sueldo = ?,
+      rubro = ?,
+      seniority = ?,
+      user = ?
+      WHERE user = ?;
+    `;
+  
+    // Execute the query with the form data
+    connection.query(
+      updateEmpleadoQuery,
+      [dni, nombre_empleado, apellido_empleado, fecha_nac, ingreso_empresa, ingreso_proyecto, sueldo, rubro, seniority, user, user],
+      (updateErr, updateResults) => {
+        if (updateErr) {
+          console.error('Error actualizando Empleado:', updateErr);
+          res.status(500).send('Internal Server Error');
+          return;
+        }
+  
+        // Check if any record was updated
+        if (updateResults.affectedRows === 0) {
+          res.status(404).send('No se encontro Empleado para actualizar');
+          return;
+        }
+  
+        res.send(`
+        <h1>Success!</h1>
+        <button onclick="location.href='/admin'">Back to Admin</button>
+        `);
+      }
+    );
+  });
+
+
+
 // BUG
 
 // Route to render the initial form to enter BUG ID

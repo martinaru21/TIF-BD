@@ -9,7 +9,8 @@ const principalRouter = require("./routes/principal.js")
 const tablasRouter = require("./routes/tablas.js")
 const insertsRouter = require("./routes/inserts.js")
 const updatesRouter = require("./routes/updates.js")
-
+const deletesRouter = require("./routes/deletes.js")
+const queriesRouter = require("./routes/queries.js")
 
   // Set up body parser middleware to parse POST request data
   app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,4 +34,11 @@ const updatesRouter = require("./routes/updates.js")
   //*************DELETES*************
   app.use('/deletes/', deletesRouter);
 
+  //*************QUERIES*************
+  app.use('/queries/', queriesRouter);
+
+  // Start the server
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+  });
   exports.app = app;

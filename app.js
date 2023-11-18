@@ -45,6 +45,11 @@ connection.connect((err) => {
       <button onclick="location.href='/showBugTable'">Show Bug Table</button>
       <button onclick="location.href='/showSedeTable'">Show Sede Table</button>
       <button onclick="location.href='/showDevTable'">Show Dev Table</button>
+      <button onclick="location.href='/showEquipamientoTable'">Show Equipamiento Table</button>
+      <button onclick="location.href='/showAssetTable'">Show Asset Table</button>
+      <button onclick="location.href='/showPjTable'">Show Personaje Table</button>
+      <button onclick="location.href='/showSmsTable'">Show SFX/Musica/Sprites Table</button>
+
     `);
   });
 
@@ -60,9 +65,9 @@ connection.connect((err) => {
       <button onclick="location.href='/artistaMenu'">Artistas</button>
       <button onclick="location.href='/testerMenu'">Testers</button>
       <button onclick="location.href='/assetMenu'">Assets</button>
-      <button onclick="location.href='/featMenu'">Features</button>
       <button onclick="location.href='/pjMenu'">Personajes</button>
-      <button onclick="location.href='/sfxMenu'">SFX/Musica/Sprites</button>
+      <button onclick="location.href='/featMenu'">Features</button>
+      <button onclick="location.href='/smsMenu'">SFX/Musica/Sprites</button>
       <button onclick="location.href='/animationMenu'">Animaciones</button>
       <button onclick="location.href='/vlMenu'">Lineas de Voz</button>
     `);
@@ -138,10 +143,45 @@ app.get('/testerMenu', (req, res) => {
   `);
 });
 
+//*************MENU ASSETS*************
+app.get('/assetMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: Asset</h1>
+    <button onclick="location.href='/assetInsertForm'">Nuevo</button>
+    <button onclick="location.href='/updateAsset'">Modificar</button>
+  `);
+});
+
+//*************MENU PERSONAJES*************
+app.get('/pjMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: Personajes</h1>
+    <button onclick="location.href='/pjInsertForm'">Nuevo</button>
+    <button onclick="location.href='/updatePj'">Modificar</button>
+  `);
+});
+
+//*************MENU FEATURE*************
+app.get('/featMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: Features</h1>
+    <button onclick="location.href='/featInsertForm'">Nuevo</button>
+    <button onclick="location.href='/updatefeat'">Modificar</button>
+  `);
+});
+
+//*************MENU SFX/MUSICA/SPRITE*************
+app.get('/smsMenu', (req, res) => {
+  res.send(`
+    <h1>Administrador: SFX/Musica/Sprites</h1>
+    <button onclick="location.href='/smsInsertForm'">Nuevo</button>
+    <button onclick="location.href='/updateSms'">Modificar</button>
+  `);
+});
 
 //*************MOSTRAR TABLAS*************
   
-//*************TABLA BUG (NO ANDA)*************
+//*************TABLA BUG*************
  // Route to show the BUG table
   app.get('/showBugTable', (req, res) => {
     // Query to select data from the BUG table
@@ -327,14 +367,194 @@ app.get('/showDevTable', (req, res) => {
     });
   });
 
+//*************TABLA ASSET*************
+ // Route to show the ASSET table
+ app.get('/showAssetTable', (req, res) => {
 
+  // Execute the query
+  connection.query('SELECT * FROM ASSET INNER JOIN ESCENARIO ON ASSET.id_escenario = ESCENARIO.id_escenario', function(err, results) {
+    if (err) {
+      console.error('Error executing MySQL query: ' + err.stack);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
 
+    // Render the data in an HTML table
+    const tableRows = results.map((row) => {
+      const creationDate = new Date(row.fecha_creacion).toLocaleDateString('en-GB');
+      var endDate = new Date(row.fecha_finalizacion).toLocaleDateString('en-GB');
+      if(endDate === '31/12/1969') endDate = '-';
+      return `<tr>
+        <td>${row.id_escenario}</td>
+        <td >${row.animado}</td>
+        <td >${row.nombre_escenario}</td>
+        <td style="max-width: 200px; overflow: auto; max-height: 50px;">${row.descripcion_escenario}</td>
+        <td>${creationDate}</td>
+        <td>${endDate}</td>
+        <td>${row.grupoDesigner}</td>
+        <td>${row.grupoDeveloper}</td>
+      </tr>`;
+    });
+
+    const tableHtml = `<style>
+      table {
+        border-collapse: collapse;
+        word-break: break-word;
+        width: 100%;
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+    <h2>Data from ASSET Table</h2>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Animated</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Creation Date</th>
+        <th>End Date</th>
+        <th>Designer Group</th>
+        <th>Developer Group</th>
+      </tr>
+      ${tableRows.join('')}
+    </table>`;
+
+    // Send the HTML response with the table
+    res.send(tableHtml);
+  });
+});
+
+//*************TABLA PERSONAJE*************
+ // Route to show the PERSONAJE table
+ app.get('/showPjTable', (req, res) => {
+
+  // Execute the query
+  connection.query('SELECT * FROM PERSONAJE INNER JOIN ESCENARIO ON PERSONAJE.id_escenario = ESCENARIO.id_escenario', function(err, results) {
+    if (err) {
+      console.error('Error executing MySQL query: ' + err.stack);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Render the data in an HTML table
+    const tableRows = results.map((row) => {
+      const creationDate = new Date(row.fecha_creacion).toLocaleDateString('en-GB');
+      var endDate = new Date(row.fecha_finalizacion).toLocaleDateString('en-GB');
+      if(endDate === '31/12/1969') endDate = '-';
+      return `<tr>
+        <td>${row.id_escenario}</td>
+        <td >${row.jugable}</td>
+        <td >${row.nombre_escenario}</td>
+        <td style="max-width: 200px; overflow: auto; max-height: 50px;">${row.descripcion_escenario}</td>
+        <td>${creationDate}</td>
+        <td>${endDate}</td>
+        <td>${row.grupoDesigner}</td>
+        <td>${row.grupoDeveloper}</td>
+      </tr>`;
+    });
+
+    const tableHtml = `<style>
+      table {
+        border-collapse: collapse;
+        word-break: break-word;
+        width: 100%;
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+    <h2>Data from PERSONAJE Table</h2>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Playable</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Creation Date</th>
+        <th>End Date</th>
+        <th>Designer Group</th>
+        <th>Developer Group</th>
+      </tr>
+      ${tableRows.join('')}
+    </table>`;
+
+    // Send the HTML response with the table
+    res.send(tableHtml);
+  });
+});
+
+//*************TABLA FEATURE*************
+ // Route to show the FEATURE table
+ app.get('/showFeatTable', (req, res) => {
+
+  // Execute the query
+  connection.query('SELECT * FROM FEATURE', function(err, results) {
+    if (err) {
+      console.error('Error executing MySQL query: ' + err.stack);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Render the data in an HTML table
+    const tableRows = results.map((row) => {
+      const creationDate = new Date(row.fecha_creacion).toLocaleDateString('en-GB');
+      var updateDate = new Date(row.fechaAct).toLocaleDateString('en-GB');
+      if(updateDate === '31/12/1969') updateDate = '-';
+      return `<tr>
+        <td>${row.id_feature}</td>
+        <td >${row.nombre_feature}</td>
+        <td style="max-width: 200px; overflow: auto; max-height: 50px;">${row.descripcion_feature}</td>
+        <td >${row.version}</td>
+        <td>${creationDate}</td>
+        <td>${updateDate}</td>
+        <td>${row.grupoDesigner}</td>
+        <td>${row.grupoDeveloper}</td>
+      </tr>`;
+    });
+
+    const tableHtml = `<style>
+      table {
+        border-collapse: collapse;
+        word-break: break-word;
+        width: 100%;
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+    <h2>Data from FEATURE Table</h2>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Version</th>
+        <th>Creation Date</th>
+        <th>Last Update Date</th>
+        <th>Designer Group</th>
+        <th>Developer Group</th>
+      </tr>
+      ${tableRows.join('')}
+    </table>`;
+
+    // Send the HTML response with the table
+    res.send(tableHtml);
+  });
+});
 
 
 //*************INSERTS*************
   // Serve the HTML form for inserting a SEDE
   app.get('/sedeInsertForm', (req, res) => {
-    res.sendFile(__dirname + '\\views\\views/sedeInsertForm.html'); // Provide the path to your sedeInsertForm.html file
+    res.sendFile(__dirname + '\\views/sedeInsertForm.html'); // Provide the path to your sedeInsertForm.html file
   });
   
   // Handle the form submission for inserting a SEDE
@@ -346,6 +566,8 @@ app.get('/showDevTable', (req, res) => {
         } else {
             console.log("results:", result);
         }
+        res.redirect('/sedeInsertForm')
+
     });
   });
 
@@ -354,7 +576,7 @@ app.get('/showDevTable', (req, res) => {
     res.sendFile(__dirname + '\\views/developerInsForm.html'); // Provide the path to your sedeInsertForm.html file
   });
   
-  // Handle the form submission for inserting a SEDE
+  // Handle the form submission for inserting a DEV
   app.post('/insertDeveloper', async (req, res) => {
     const { dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo } = req.body;
     connection.query("call crearDeveloper(?,?,?,?,?,?,?,?,?,?)", [dni, nombre, apellido, fecha_nac, ing_emp, ing_proy, sueldo, rubro, seniority, grupo], function (err, result){
@@ -363,7 +585,7 @@ app.get('/showDevTable', (req, res) => {
         } else {
             console.log("results:", result);
         }
-        res.send('SEDE updated successfully!');
+        res.redirect('/developerInsForm')
 
     });
   });
@@ -385,9 +607,73 @@ app.get('/showDevTable', (req, res) => {
         } else {
             console.log("results:", result);
         }
+        res.redirect('/bugInsertForm')
+
     });
   });
 
+  // Serve the HTML form for inserting an asset
+  app.get('/assetInsertForm', (req, res) => {
+    res.sendFile(__dirname + '\\views/assetInsertForm.html'); // Provide the path to your assetInsertForm.html file
+  });
+  
+  // Handle the form submission for inserting a asset
+  app.post('/insertAsset', async (req, res) => {
+    var { id, nombre, descripcion, grupoDes, grupoDev } = req.body;
+
+    connection.query("call crearAsset(?, ?, ?, ?, ?)", [id, nombre, descripcion, grupoDes, grupoDev], function (err, result)
+    {
+        if (err) {
+            console.log("err:", err);
+        } else {
+            console.log("results:", result);
+        }
+
+        res.redirect('/assetInsertForm')
+    });
+  });
+
+    // Serve the HTML form for inserting a personaje
+  app.get('/pjInsertForm', (req, res) => {
+    res.sendFile(__dirname + '\\views/pjInsertForm.html'); // Provide the path to your pjInsertForm.html file
+  });
+  
+  // Handle the form submission for inserting a pj
+  app.post('/insertPj', async (req, res) => {
+    var { id,  nombre, descripcion, jugable, grupoDes, grupoDev } = req.body;
+
+    connection.query("call crearPersonaje(?, ?, ?, ?, ?, ?)", [id, nombre, descripcion, jugable, grupoDes, grupoDev], function (err, result)
+    {
+        if (err) {
+            console.log("err:", err);
+        } else {
+            console.log("results:", result);
+        }
+
+        res.redirect('/pjInsertForm')
+    });
+  });
+
+    // Serve the HTML form for inserting a Feature
+    app.get('/featInsertForm', (req, res) => {
+      res.sendFile(__dirname + '\\views/featInsertForm.html'); // Provide the path to your featInsertForm.html file
+    });
+    
+    // Handle the form submission for inserting a feat
+    app.post('/insertFeat', async (req, res) => {
+      var { id,  nombre, descripcion, version, fechaCreacion, grupoDes, grupoDev } = req.body;
+  
+      connection.query("call crearFeature(?, ?, ?, ?, ?, ?, ?)", [id,  nombre, descripcion, version, fechaCreacion, grupoDes, grupoDev], function (err, result)
+      {
+          if (err) {
+              console.log("err:", err);
+          } else {
+              console.log("results:", result);
+          }
+  
+          res.redirect('/featInsertForm')
+      });
+    });  
 
 //*************UPDATES*************
 //SEDE
@@ -473,7 +759,11 @@ app.post('/submitUpdatedSede', (req, res) => {
         return;
       }
 
-      res.send('SEDE updated successfully!');
+      res.send(`
+      <h1>Success!</h1>
+      <button onclick="location.href='/showSedeTable'">Back to Sede Table</button>
+      <button onclick="location.href='/admin'">Back to Admin</button>
+      `);
     }
   );
 });
@@ -562,7 +852,304 @@ app.post('/submitUpdatedBug', (req, res) => {
         return;
       }
 
-      res.redirect('/admin');
+      res.send(`
+      <h1>Success!</h1>
+      <button onclick="location.href='/showBugTable'">Back to Bug Table</button>
+      <button onclick="location.href='/admin'">Back to Admin</button>
+      `);
+
+    }
+  );
+});
+
+// ASSET
+
+// Route to render the initial form to enter Asset ID
+app.get('/updateAsset', (req, res) => {
+  res.sendFile(__dirname + '\\views/enterAssetIDForm.html');
+});
+
+// Route to handle the form submission and redirect to the update form
+app.post('/enterAssetID', (req, res) => {
+  const { id_asset } = req.body;
+
+  // Check if id_asset is provided
+  if (!id_asset) {
+    res.status(400).send('Asset ID is required');
+    return;
+  }
+
+  // Redirect to the update form with the provided Asset ID
+  res.redirect(`/updateThisAsset/${id_asset}`);
+});
+
+
+// Route to render the update form with Asset data
+app.get('/updateThisAsset/:id_asset', (req, res) => {
+  const id_asset = req.params.id_asset;
+
+  // SQL query to check if the Asset with the given ID exists
+  const checkAssetQuery = `SELECT * FROM ASSET INNER JOIN ESCENARIO ON ASSET.id_escenario = ESCENARIO.id_escenario WHERE ASSET.id_escenario = ${'"' + id_asset + '"'}`;
+
+  connection.query(checkAssetQuery, (checkErr, checkResults) => {
+    if (checkErr) {
+      console.error('Error checking ASSET:', checkErr);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Check if the ASSET with the given ID exists
+    if (checkResults.length === 0) {
+      res.status(404).send('ASSET not found');
+      return;
+    }
+
+    // Render the update form with ASSET data
+    res.render('updateAssetForm', { assetData: checkResults[0] });
+  });
+});
+
+// Route to handle the updated data submission
+app.post('/submitUpdatedAsset', (req, res) => {
+  var { id, nombre, descripcion, grupoDes, grupoDev } = req.body;
+  // SQL query to update the ASSET record
+  const updateAssetQuery = `
+    UPDATE ESCENARIO
+    SET
+      id_escenario = ?,
+      nombre_escenario = ?,
+      descripcion_escenario = ?,
+      grupoDesigner = ?,
+      grupoDeveloper = ?
+    WHERE id_escenario = ?;
+  `;
+
+  // Execute the query with the form data
+  connection.query(
+    updateAssetQuery,
+    [id, nombre, descripcion, grupoDes, grupoDev, id],
+    (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error('Error updating ASSET:', updateErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+
+      // Check if any record was updated
+      if (updateResults.affectedRows === 0) {
+        res.status(404).send('ASSET not found for update');
+        return;
+      }
+
+      res.send(`
+      <h1>Success!</h1>
+      <button onclick="location.href='/showAssetTable'">Back to Asset Table</button>
+      <button onclick="location.href='/admin'">Back to Admin</button>
+      `);
+
+    }
+  );
+});
+
+// PERSONAJE
+
+// Route to render the initial form to enter Personaje ID
+app.get('/updatePj', (req, res) => {
+  res.sendFile(__dirname + '\\views/enterPjIDForm.html');
+});
+
+// Route to handle the form submission and redirect to the update form
+app.post('/enterPjID', (req, res) => {
+  const { id_pj } = req.body;
+
+  // Check if id_pj is provided
+  if (!id_pj) {
+    res.status(400).send('Personaje ID is required');
+    return;
+  }
+
+  // Redirect to the update form with the provided Personaje ID
+  res.redirect(`/updateThisPj/${id_pj}`);
+});
+
+
+// Route to render the update form with Personaje data
+app.get('/updateThisPj/:id_pj', (req, res) => {
+  const id_pj = req.params.id_pj;
+
+  // SQL query to check if the Personaje with the given ID exists
+  const checkPersonajeQuery = `SELECT * FROM PERSONAJE INNER JOIN ESCENARIO ON PERSONAJE.id_escenario = ESCENARIO.id_escenario WHERE PERSONAJE.id_escenario = ${'"' + id_pj + '"'}`;
+
+  connection.query(checkPersonajeQuery, (checkErr, checkResults) => {
+    if (checkErr) {
+      console.error('Error checking Personaje:', checkErr);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Check if the PERSONAJE with the given ID exists
+    if (checkResults.length === 0) {
+      res.status(404).send('PERSONAJE not found');
+      return;
+    }
+
+    // Render the update form with PERSONAJE data
+    res.render('updatePjForm', { pjData: checkResults[0] });
+  });
+});
+
+// Route to handle the updated data submission
+app.post('/submitUpdatedPj', (req, res) => {
+  var {id, nombre, descripcion, jugable, grupoDes, grupoDev } = req.body;
+  // SQL query to update the PERSONAJE record
+  const updatePjQuery = `
+    UPDATE PERSONAJE
+    SET
+      jugable = ?
+    WHERE id_escenario = ?;
+  `;
+  const updateEscQuery = `
+  UPDATE ESCENARIO
+  SET
+    id_escenario = ?,
+    nombre_escenario = ?,
+    descripcion_escenario = ?,
+    grupoDesigner = ?,
+    grupoDeveloper = ?
+  WHERE id_escenario = ?;
+`;
+
+
+  // Execute the query with the form data
+  connection.query(
+    updatePjQuery,
+    [jugable, id],
+    (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error('Error updating PERSONAJE:', updateErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+
+      // Check if any record was updated
+      if (updateResults.affectedRows === 0) {
+        res.status(404).send('PERSONAJE not found for update');
+        return;
+      }
+
+      connection.query(
+        updateEscQuery,
+        [id, nombre, descripcion, grupoDes, grupoDev, id],
+        (updateErr, updateResults) => {
+          if (updateErr) {
+            console.error('Error updating PERSONAJE:', updateErr);
+            res.status(500).send('Internal Server Error');
+            return;
+          }
+    
+          // Check if any record was updated
+          if (updateResults.affectedRows === 0) {
+            res.status(404).send('PERSONAJE not found for update');
+            return;
+          }
+    
+          res.send(`
+          <h1>Success!</h1>
+          <button onclick="location.href='/showPjTable'">Back to Personaje Table</button>
+          <button onclick="location.href='/admin'">Back to Admin</button>
+          `);
+    
+        });
+    });
+});
+
+// FEATURE
+
+// Route to render the initial form to enter Feature ID
+app.get('/updateFeat', (req, res) => {
+  res.sendFile(__dirname + '\\views/enterFeatIDForm.html');
+});
+
+// Route to handle the form submission and redirect to the update form
+app.post('/enterFeatID', (req, res) => {
+  const { id_feat } = req.body;
+
+  // Check if id_feat is provided
+  if (!id_feat) {
+    res.status(400).send('Feature ID is required');
+    return;
+  }
+
+  // Redirect to the update form with the provided Feature ID
+  res.redirect(`/updateThisFeat/${id_feat}`);
+});
+
+
+// Route to render the update form with Feature data
+app.get('/updateThisFeat/:id_feat', (req, res) => {
+  const id_feat = req.params.id_feat;
+
+  // SQL query to check if the Feature with the given ID exists
+  const checkFeatQuery = `SELECT * FROM FEATURE WHERE id_feature = ${'"' + id_feat + '"'}`;
+
+  connection.query(checkFeatQuery, (checkErr, checkResults) => {
+    if (checkErr) {
+      console.error('Error checking FEATURE:', checkErr);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+
+    // Check if the FEATURE with the given ID exists
+    if (checkResults.length === 0) {
+      res.status(404).send('FEATURE not found');
+      return;
+    }
+
+    checkResults[0].fecha_creacion = checkResults[0].fecha_creacion.toLocaleDateString('se-SE');
+    // Render the update form with FEATURE data
+    res.render('updateFeatForm', { featData: checkResults[0] });
+  });
+});
+
+// Route to handle the updated data submission
+app.post('/submitUpdatedFeat', (req, res) => {
+  var { id, nombre, descripcion, version, fechaCreacion, grupoDes, grupoDev } = req.body;
+  // SQL query to update the FEATURE record
+  const updateFeatQuery = `
+    UPDATE FEATURE
+    SET
+      id_feature = ?,
+      nombre_feature = ?,
+      descripcion_feature = ?,
+      version = ?,
+      fecha_creacion = ?,
+      grupoDesigner = ?,
+      grupoDeveloper = ?
+    WHERE id_feature = ?;
+  `;
+
+  // Execute the query with the form data
+  connection.query(
+    updateFeatQuery,
+    [id, nombre, descripcion, version, fechaCreacion, grupoDes, grupoDev, id],
+    (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error('Error updating FEATURE:', updateErr);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+
+      // Check if any record was updated
+      if (updateResults.affectedRows === 0) {
+        res.status(404).send('FEATURE not found for update');
+        return;
+      }
+
+      res.send(`
+      <h1>Success!</h1>
+      <button onclick="location.href='/showFeatTable'">Back to Feature Table</button>
+      <button onclick="location.href='/admin'">Back to Admin</button>
+      `);
 
     }
   );
@@ -604,7 +1191,11 @@ app.post('/deleteBug', (req, res) => {
       return;
     }
 
-    res.redirect('/admin');
+    res.send(`
+    <h1>Success!</h1>
+    <button onclick="location.href='/showBugTable'">Back to Bug Table</button>
+    <button onclick="location.href='/admin'">Back to Admin</button>
+    `);
   });
 });
 
@@ -641,7 +1232,11 @@ app.post('/deleteEquipamiento', (req, res) => {
       return;
     }
 
-    res.send('EQUIPAMIENTO deleted successfully!');
+    res.send(`
+    <h1>Success!</h1>
+    <button onclick="location.href='/showEquipamientoTable'">Back to Equipamiento Table</button>
+    <button onclick="location.href='/admin'">Back to Admin</button>
+    `);
   });
 });
 

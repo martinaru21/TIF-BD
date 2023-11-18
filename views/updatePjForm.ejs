@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Personaje</title>
+</head>
+<body>
+  <h2>Update Data in PERSONAJE Table</h2>
+  <form action="/submitUpdatedPj" method="post">
+
+    <label for="id">ID:</label>
+    <input type="text" name="id" value="<%= pjData.id_escenario %>" readonly><br>
+
+    <label for="nombre">Name:</label>
+    <input type="text" name="nombre" value="<%= pjData.nombre_escenario %>" required><br>
+
+    <label for="descripcion">Description:</label>
+    <textarea name="descripcion" rows="4" required>
+      <%= pjData.descripcion_escenario %>
+    </textarea><br>
+
+    <label for="jugable">Playable:</label>
+    <input type="number" name="jugable" value="<%= pjData.jugable %>" required><br>
+
+    <label for="grupoDes">Grupo Designer:</label>
+    <input type="text" name="grupoDes" value="<%= pjData.grupoDesigner %>" required><br>
+
+    <label for="grupoDev">Grupo Developer:</label>
+    <input type="text" name="grupoDev" value="<%= pjData.grupoDeveloper %>" required><br>
+
+    <button type="submit">Update Data</button>
+  </form>
+</body>
+</html>

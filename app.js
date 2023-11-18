@@ -698,6 +698,22 @@ app.get('/verEscCompl', (req, res) => {
 });
 
 
+app.get('/verPromedioFinalizacion', (req, res) => {
+  const nombreGrDev = req.query.nombreGrDev;
+
+  // Execute the stored procedure
+  const query = 'CALL verPromedioFinalizacion(?)';
+  connection.query(query, [nombreGrDev], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
 
   // Start the server
   app.listen(port, () => {

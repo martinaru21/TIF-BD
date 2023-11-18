@@ -118,6 +118,98 @@ router.post("/submitUpdatedSede", (req, res) => {
   );
 });
 
+//EQUIPAMIENTO
+
+// Route to render the initial form to enter EQUIPAMIENTO ID
+router.get("/updateEquip", (req, res) => {
+  res.sendFile(__dirname + "\\views/enterEquipIDForm.html");
+});
+
+// Route to handle the form submission and redirect to the update form
+router.post("/enterEquipID", (req, res) => {
+  const { id_equip } = req.body;
+
+  // Check if id_equip is provided
+  if (!id_equip) {
+    res.status(400).send("ID is required");
+    return;
+  }
+
+  // Redirect to the update form with the provided id_equip
+  res.redirect(`/updates/updateThisEquip/${id_equip}`);
+});
+
+// Route to render the update form with Equip data
+router.get("/updateThisEquip/:id_equip", (req, res) => {
+  const id_equip = req.params.id_equip;
+
+  // SQL query to check if the EQUIPAMIENTO with the given id_equip exists
+  const checkEquipQuery = `SELECT * FROM EQUIPAMIENTO WHERE id_equipamiento = ${"'" + id_equip + "'"}`;
+
+  connection.query(checkEquipQuery, (checkErr, checkResults) => {
+    if (checkErr) {
+      console.error("Error checking EQUIPAMIENTO:", checkErr);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    // Check if the EQUIPAMIENTO with the given CUIT exists
+    if (checkResults.length === 0) {
+      res.status(404).send("EQUIPAMIENTO not found");
+      return;
+    }
+
+    // Render the update form with EQUIPAMIENTO data
+    res.render("updateEquipForm", { equipData: checkResults[0] });
+  });
+});
+
+// Route to handle the updated data submission
+router.post("/submitUpdatedEquip", (req, res) => {
+  var {
+    id_equip, nombre_equip, precio, cuit_sede, user
+  } = req.body;
+  if (user === '') user = null;
+  // SQL query to update the EQUIPAMIENTO record
+  const updateEquipQuery = `
+    UPDATE EQUIPAMIENTO
+    SET
+      id_equipamiento = ?,
+      nombre_equipamiento = ?,
+      precio = ?,
+      SEDE_cuit = ?,
+      user = ?
+    WHERE id_equipamiento = ?;
+  `;
+
+  // Execute the query with the form data
+  connection.query(
+    updateEquipQuery,
+    [
+      id_equip, nombre_equip, precio, cuit_sede, user, id_equip
+    ],
+    (updateErr, updateResults) => {
+      if (updateErr) {
+        console.error("Error updating EQUIPAMIENTO:", updateErr);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      // Check if any record was updated
+      if (updateResults.affectedRows === 0) {
+        res.status(404).send("EQUIPAMIENTO not found for update");
+        return;
+      }
+
+      res.send(`
+      <h1>Success!</h1>
+      <button onclick="location.href='/tables/showEquipTable'">Back to Equipamiento Table</button>
+      <button onclick="location.href='/admin'">Back to Admin</button>
+      `);
+    },
+  );
+});
+
 // Modificar EMPLEADO
 app.get("/empleadoModForm", (req, res) => {
   res.sendFile(__dirname + "\\views/enterUserEmpForm.html");

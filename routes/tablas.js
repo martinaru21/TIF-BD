@@ -148,6 +148,60 @@ router.get("/showSedeTable", (req, res) => {
   });
 });
 
+//*************TABLA EQUIPAMIENTO*************
+// Route to show the EQUIPAMIENTO table
+router.get("/showEquipTable", (req, res) => {
+  // Query to select data from the EQUIPAMIENTO table
+  const query = "SELECT * FROM EQUIPAMIENTO";
+
+  // Execute the query
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing MySQL query: " + err.stack);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    // Render the data in an HTML table
+    const tableRows = results.map((row) => {
+      return `<tr>
+                  <td>${row.id_equipamiento}</td>
+                  <td>${row.nombre_equipamiento}</td>
+                  <td>${row.precio}</td>
+                  <td>${row.SEDE_cuit}</td>
+                  <td>${row.user}</td>
+                </tr>`;
+    });
+
+    const tableHtml = `<style>
+    table {
+      border-collapse: collapse;
+      word-break: break-word;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+  <h2>Data from EQUIPAMIENTO Table</h2>
+                          <table border="1">
+                            <tr>
+                              <th>ID</th>
+                              <th>Nombre Equipamiento</th>
+                              <th>Precio</th>
+                              <th>CUIT Sede</th>
+                              <th>Asignado a</th>
+                            </tr>${tableRows.join("")}</table><br/><br/>
+                            <button onclick="location.href='/consultas'">Volver</button>`;
+
+    // Send the HTML response with the table
+    res.send(tableHtml);
+  });
+});
+
+
 //*************TABLA DEVS+EMPLEADO*************
 // Route to show the SEDE table
 router.get("/showDevTable", (req, res) => {
@@ -577,6 +631,55 @@ router.get("/showVlTable", (req, res) => {
         <th>Voice Actor</th>
         <th>Spanish Text</th>
         <th>English Text</th>
+      </tr>
+      ${tableRows.join("")}
+    </table><br/><br/>
+    <button onclick="location.href='/consultas'">Volver</button>`;
+
+      // Send the HTML response with the table
+      res.send(tableHtml);
+    },
+  );
+});
+
+//*************TABLA LINK*************
+// Route to show the LINK table
+router.get("/showLinkTable", (req, res) => {
+  // Execute the query
+  connection.query(
+    "SELECT * FROM ESCENARIO_has_SPRITE_SFX_MUSICA",
+    function (err, results) {
+      if (err) {
+        console.error("Error executing MySQL query: " + err.stack);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      // Render the data in an HTML table
+      const tableRows = results.map((row) => {
+        return `<tr>
+        <td>${row.id_arte}</td>
+        <td >${row.id_escenario}</td>
+      </tr>`;
+      });
+
+      const tableHtml = `<style>
+      table {
+        border-collapse: collapse;
+        word-break: break-word;
+        width: 100%;
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+    <h2>Data from ESCENARIO_has_SPRITE_SFX_MUSICA Table</h2>
+    <table>
+      <tr>
+        <th>ID Arte</th>
+        <th>ID Escenario</th>
       </tr>
       ${tableRows.join("")}
     </table><br/><br/>

@@ -49,6 +49,33 @@ router.post("/insertSede", async (req, res) => {
   );
 });
 
+// Serve the HTML form for inserting a EQUIPAMIENTO
+router.get("/equipInsertForm", (req, res) => {
+  res.sendFile(__dirname + "\\views/equipInsertForm.html"); // Provide the path to your equipInsertForm.html file
+});
+
+// Handle the form submission for inserting a SEDE
+router.post("/insertEquip", async (req, res) => {
+  const {
+    id_equip, nombre_equip, precio, cuit_sede
+  } = req.body;
+  connection.query(
+    "call crearEquipamiento(?, ?, ?, ?)",
+    [
+      id_equip, nombre_equip, precio, cuit_sede
+    ],
+    function (err, result) {
+      if (err) {
+        console.log("err:", err);
+      } else {
+        console.log("results:", result);
+      }
+      res.redirect("/inserts/equipInsertForm");
+    },
+  );
+});
+
+
 // Serve the HTML form for inserting a Developer
 router.get("/developerInsForm", (req, res) => {
   res.sendFile(__dirname + "\\views/developerInsForm.html"); // Provide the path to your sedeInsertForm.html file

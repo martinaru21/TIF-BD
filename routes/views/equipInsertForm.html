@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Insert EQUIPAMIENTO Form</title>
+  </head>
+  <body>
+    <h2>Insert Data into EQUIPAMIENTO Table</h2>
+    <form action="/inserts/insertEquip" method="post">
+      <label for="id_equip">ID:</label>
+      <input type="text" name="id_equip" required /><br />
+
+      <label for="nombre_equip">Nombre:</label>
+      <input type="text" name="nombre_equip" required /><br />
+
+      <label for="precio">Precio:</label>
+      <input type="number" name="precio" required /><br />
+
+      <label for="cuit_sede">CUIT SEDE:</label>
+      <input type="number" name="cuit_sede" required /><br />
+
+      <button type="submit">Insert Data</button>
+    </form>
+    <br />
+    <button onclick="location.href='/tables/showEquipTable'">
+      Back to EQUIPAMIENTO Table
+    </button>
+  </body>
+</html>

@@ -37,6 +37,7 @@ const styling = `<style>
 router.get("/", (req, res) => {
   res.send(styling + `
     <h1>Menu Principal</h1>
+    <h2>Sistema de Gestión del Desarrollo de un Videojuego</h2>
     <button class="button" onclick="location.href='/consultas'">Consultas</button>
     <button class="button" onclick="location.href='/admin'">Administrador</button>
   `);
@@ -79,7 +80,10 @@ router.get("/admin", (req, res) => {
     <button class="button" onclick="location.href='/featMenu'">Features</button>
     <button class="button" onclick="location.href='/smsMenu'">SFX/Musica/Sprites</button>
     <button class="button" onclick="location.href='/animMenu'">Animaciones</button>
-    <button class="button" onclick="location.href='/vlMenu'">Lineas de Voz</button><br/><br/>
+    <button class="button" onclick="location.href='/vlMenu'">Lineas de Voz</button><br/>
+    <h2>Asignar/Relacionar</h2>
+    <button class="button" onclick="location.href='/queries/linkEquipEmp'">Asignar Equipamiento a un Empleado</button>
+    <button class="button" onclick="location.href='/queries/linkEscArt'">Incluir Arte en un Escenario</button><br/><br/>
     <button class="volver-button" onclick="location.href='/'">Volver</button>
   `);
 });
@@ -101,7 +105,6 @@ router.get("/sedeMenu", (req, res) => {
     <h1>Administrador: Sedes</h1>
     <button class="button" onclick="location.href='/inserts/sedeInsertForm'">Nuevo</button>
     <button class="button" onclick="location.href='/updates/updateSede'">Modificar</button>
-    <button class="button" onclick="location.href='/deletes/deleteSede'">Borrar</button><br/><br/>
     <button class="volver-button" onclick="location.href='/admin'">Volver</button>
   `);
 });
@@ -110,9 +113,9 @@ router.get("/sedeMenu", (req, res) => {
 router.get("/equipMenu", (req, res) => {
   res.send(styling + `
         <h1>Administrador: Equipamiento</h1>
-        <button class="button" onclick="location.href='/inserts/sedeInsertForm'">Nuevo</button>
-        <button class="button" onclick="location.href='/sedeInsertForm'">Modificar</button>
-        <button class="button" onclick="location.href='/deletes/deleteEquipamiento'">Borrar</button><br/><br/>
+        <button class="button" onclick="location.href='/inserts/equipInsertForm'">Nuevo</button>
+        <button class="button" onclick="location.href='/updates/updateEquip'">Modificar</button>
+        <button class="button" onclick="location.href='/deletes/deleteEquip'">Borrar</button><br/><br/>
         <button class="volver-button" onclick="location.href='/admin'">Volver</button>
       `);
 });

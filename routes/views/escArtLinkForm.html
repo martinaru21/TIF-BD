@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link ESCENARIO to ARTE</title>
+  </head>
+  <body>
+    <h2>Insert Data to Link</h2>
+    <form action="/queries/linkEA" method="post">
+      <label for="idArte">ID Arte:</label>
+      <input type="text" name="idArte" required /><br />
+
+      <label for="idEscenario">ID Escenario:</label>
+      <input type="text" name="idEscenario" required /><br />
+
+      <button type="submit">Insert Data</button>
+    </form>
+    <br />
+    <button onclick="location.href='/admin'">Back</button>
+  </body>
+</html>

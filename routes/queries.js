@@ -180,4 +180,57 @@ router.get("/verPromedioFinalizacion", (req, res) => {
   });
 });
 
+// Serve the HTML form for linking an EQUIPAMIENTO TO a EMPLEADO
+router.get("/linkEquipEmp", (req, res) => {
+  res.sendFile(__dirname + "\\views/equipLinkForm.html"); // Provide the path to your equipLinkForm.html file
+});
+
+// Handle the form submission for inserting a SEDE
+router.post("/linkEE", async (req, res) => {
+  const {
+    id_equip, usuario
+  } = req.body;
+  connection.query(
+    "call anadirEquipEmp(?,?)",
+    [
+      id_equip, usuario
+    ],
+    function (err, result) {
+      if (err) {
+        console.log("err:", err);
+      } else {
+        console.log("results:", result);
+      }
+      res.redirect("/queries/linkEquipEmp");
+    },
+  );
+});
+
+// Serve the HTML form for linking an ESCENARIO TO an ARTE
+router.get("/linkEscArt", (req, res) => {
+  res.sendFile(__dirname + "\\views/escArtLinkForm.html"); // Provide the path to your escArtLinkForm.html file
+});
+
+// Handle the form submission for inserting a SEDE
+router.post("/linkEA", async (req, res) => {
+  const {
+    idArte, idEscenario
+  } = req.body;
+  connection.query(
+    "call unirEscenario_Arte(?,?)",
+    [
+      idArte, idEscenario
+    ],
+    function (err, result) {
+      if (err) {
+        console.log("err:", err);
+      } else {
+        console.log("results:", result);
+      }
+      res.redirect("/queries/linkEscArt");
+    },
+  );
+});
+
+
 module.exports = router;

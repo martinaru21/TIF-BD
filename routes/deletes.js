@@ -48,10 +48,10 @@ router.post("/deleteBug", (req, res) => {
 });
 
 // Route to render the form to enter EQUIPAMIENTO ID for deletion
-router.get("/deleteEquipamiento", (req, res) => {
+router.get("/deleteEquip", (req, res) => {
   res.send(`
       <h2>Delete EQUIPAMIENTO</h2>
-      <form action="/deletes/deleteEquipamiento" method="post">
+      <form action="/deletes/deleteEquip" method="post">
         <label for="id_equipamiento">ID Equipamiento:</label>
         <input type="text" name="id_equipamiento" required><br>
         <button type="submit">Delete EQUIPAMIENTO</button>
@@ -60,7 +60,7 @@ router.get("/deleteEquipamiento", (req, res) => {
 });
 
 // Route to handle the form submission and delete the EQUIPAMIENTO
-router.post("/deleteEquipamiento", (req, res) => {
+router.post("/deleteEquip", (req, res) => {
   const idEquipamiento = req.body.id_equipamiento;
 
   // SQL query to delete the EQUIPAMIENTO record
@@ -86,7 +86,7 @@ router.post("/deleteEquipamiento", (req, res) => {
 
       res.send(`
       <h1>Success!</h1>
-      <button onclick="location.href='/tables/showEquipamientoTable'">Back to Equipamiento Table</button>
+      <button onclick="location.href='/tables/showEquipTable'">Back to Equipamiento Table</button>
       <button onclick="location.href='/admin'">Back to Admin</button>
       `);
     },

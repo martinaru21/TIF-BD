@@ -9,6 +9,13 @@
   </head>
   <body>
     <style>
+      .container{
+        display: grid;
+        width: 1fr;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 1em;
+        padding-top: 20px;
+      }
       .button {
         font-size: 20px;
         background-color: lightblue;
@@ -42,6 +49,7 @@
     /><br /><br />
 
     <!-- Search button -->
+    <div class="container">
     <button class="button" onclick="verArteEncargado()">
       Search Arte Encargado
     </button>
@@ -51,7 +59,7 @@
     </button>
     <button class="button" onclick="verMiembrosDesigners()">
       Ver Miembros Designer</button
-    ><br />
+    >
     <button class="button" onclick="verBugsReportados()">
       Ver Bugs Reportados
     </button>
@@ -63,7 +71,7 @@
     </button>
     <button class="button" onclick="verBugsFeatEsc()">
       Ver los Bugs de un Feature</button
-    ><br />
+    >
     <button class="button" onclick="verEscCompl()">
       Ver Escenario Completo
     </button>
@@ -71,16 +79,17 @@
       Ver Promedio de Finalizacion por Grupo
     </button>
     <button class="button" onclick="search('*')">Button 12</button>
-    <button class="button" onclick="search('*')">Button 13</button><br />
+    <button class="button" onclick="search('*')">Button 13</button>
     <button class="button" onclick="search('*')">Button 14</button>
     <button class="button" onclick="search('*')">Button 15</button>
     <button class="button" onclick="search('*')">Button 16</button>
-    <button class="button" onclick="search('*')">Button 17</button><br />
+    <button class="button" onclick="search('*')">Button 17</button>
     <button class="button" onclick="search('*')">Button 18</button>
     <button class="button" onclick="search('*')">Button 19</button>
     <button class="button" onclick="search('*')">Button 20</button>
     <button class="button" onclick="search('*')">Button 21</button>
-    <button class="button" onclick="search('*')">Button 22</button><br />
+    <button class="button" onclick="search('*')">Button 22</button>
+    </div>
     <h2>Queries</h2>
     <button class="button" onclick="verOcupacionEmpleados()">
       Ver Empleados con sus Ocupaciones</button

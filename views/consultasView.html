@@ -71,6 +71,8 @@
     <button onclick="bugsAsignadosA()">Ver Bugs Asignados</button>
     <button onclick="verTrabajadoresDeFeature()">Ver Trabajadores de un Feature</button>
     <button onclick="verTrabajadoresDeEscenario()">Ver Trabajadores de un Escenario</button>
+    </div>
+
     <button onclick="location.href='/showBugTable'">Show Bug Table</button>
     <button onclick="location.href='/showSedeTable'">Show Sede Table</button>
     <button onclick="location.href='/showDevTable'">Show Dev Table</button>
@@ -279,7 +281,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verPromedioFinalizacion?nombreGrDev=${searchTerm}`)
+        fetch(`/queries/verPromedioFinalizacion?nombreGrDev=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTablePF(data))
           .catch((error) => console.error("Error:", error));
@@ -396,7 +398,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verLineasDeVoz?id_pj=${searchTerm}`)
+        fetch(`/queries/verLineasDeVoz?id_pj=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableLV(data))
           .catch((error) => console.error("Error:", error));
@@ -431,7 +433,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verAnimAsset?id_asset=${searchTerm}`)
+        fetch(`/queries/verAnimAsset?id_asset=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableAA(data))
           .catch((error) => console.error("Error:", error));
@@ -465,7 +467,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/trabajosDe?usuario=${searchTerm}`)
+        fetch(`/queries/trabajosDe?usuario=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableT(data))
           .catch((error) => console.error("Error:", error));
@@ -477,7 +479,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/SASdeEscenario?nombre=${searchTerm}`)
+        fetch(`/queries/SASdeEscenario?nombre=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableT(data))
           .catch((error) => console.error("Error:", error));
@@ -489,7 +491,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verEquipDeSede?nombre=${searchTerm}`)
+        fetch(`/queries/verEquipDeSede?nombre=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableT(data))
           .catch((error) => console.error("Error:", error));
@@ -501,7 +503,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verEquipDeEmpleado?nombre=${searchTerm}`)
+        fetch(`/queries/verEquipDeEmpleado?nombre=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableT(data))
           .catch((error) => console.error("Error:", error));
@@ -535,7 +537,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/actorDeVozDe?nombre=${searchTerm}`)
+        fetch(`/queries/actorDeVozDe?nombre=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableAV(data))
           .catch((error) => console.error("Error:", error));
@@ -547,7 +549,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verTrabajadoresDeFeature?nombre=${searchTerm}`)
+        fetch(`/queries/verTrabajadoresDeFeature?nombre=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableAV(data))
           .catch((error) => console.error("Error:", error));
@@ -559,7 +561,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verTrabajadoresDeEscenario?nombre=${searchTerm}`)
+        fetch(`/queries/verTrabajadoresDeEscenario?nombre=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableAV(data))
           .catch((error) => console.error("Error:", error));
@@ -593,7 +595,7 @@
         );
 
         // Make the request with the encoded parameter
-        fetch(`/bugsAsignadosA?nombre=${searchTerm}`)
+        fetch(`/queries/bugsAsignadosA?nombre=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableBA(data))
           .catch((error) => console.error("Error:", error));
@@ -619,9 +621,6 @@
         // Display the table in a designated area on your page
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
-
-
-
 
 
     </script>

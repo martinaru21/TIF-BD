@@ -51,31 +51,67 @@
     <!-- Search button -->
     <div class="container">
 
-    <button onclick="verArteEncargado()">Search Arte Encargado</button>
-    <button onclick="verReporter()">Search Reporter</button>
-    <button onclick="verAnimadoresEncargados()">Ver Animadores Encargados</button>
-    <button onclick="verMiembrosDesigners()">Ver Miembros Designer</button>
-    <button onclick="verBugsReportados()">Ver Bugs Reportados</button>
-    <button onclick="verPromedioResolucion()">Ver Promedio de Resolucion</button>
-    <button onclick="empleadosDeGrupo()">Ver Empleados por Grupo</button>
-    <button onclick="verBugsFeatEsc()">Ver los Bugs de un Feature</button>
-    <button onclick="verEscCompl()">Ver Escenario Completo</button>
-    <button onclick="verPromedioFinalizacion()">Ver Promedio de Finalizacion</button>
-    <button onclick="verLineasDeVoz()">Ver Lineas de Voz</button>
-    <button onclick="verAnimAsset()">Ver Animacion de un Asset</button>
-    <button onclick="trabajosDe()">Ver Trabajos</button>
-    <button onclick="SASdeEscenario()">Ver Arte de un Escenario</button>
-    <button onclick="verEquipDeSede()">Ver el Equipamiento de una Sede</button>
-    <button onclick="verEquipDeEmpleado()">Ver el Equipamiento de una Persona</button>
-    <button onclick="actorDeVozDe()">Ver Actor de una Linea de Voz</button>
-    <button onclick="bugsAsignadosA()">Ver Bugs Asignados</button>
-    <button onclick="verTrabajadoresDeFeature()">Ver Trabajadores de un Feature</button>
-    <button onclick="verTrabajadoresDeEscenario()">Ver Trabajadores de un Escenario</button>
+    <button class= "button" onclick="verArteEncargado()">Search Arte Encargado</button>
+    <button class= "button" onclick="verReporter()">Search Reporter</button>
+    <button class= "button" onclick="verAnimadoresEncargados()">Ver Animadores Encargados</button>
+    <button class= "button" onclick="verMiembrosDesigners()">Ver Miembros Designer</button>
+    <button class= "button" onclick="verBugsReportados()">Ver Bugs Reportados</button>
+    <button class= "button" onclick="verPromedioResolucion()">Ver Promedio de Resolucion</button>
+    <button class= "button" onclick="empleadosDeGrupo()">Ver Empleados por Grupo</button>
+    <button class= "button" onclick="verBugsFeatEsc()">Ver los Bugs de un Feature</button>
+    <button class= "button" onclick="verEscCompl()">Ver Escenario Completo</button>
+    <button class= "button" onclick="verPromedioFinalizacion()">Ver Promedio de Finalizacion</button>
+    <button class= "button" onclick="verLineasDeVoz()">Ver Lineas de Voz</button>
+    <button class= "button" onclick="verAnimAsset()">Ver Animacion de un Asset</button>
+    <button class= "button" onclick="trabajosDe()">Ver Trabajos</button>
+    <button class= "button" onclick="SASdeEscenario()">Ver Arte de un Escenario</button>
+    <button class= "button" onclick="verEquipDeSede()">Ver el Equipamiento de una Sede</button>
+    <button class= "button" onclick="verEquipDeEmpleado()">Ver el Equipamiento de una Persona</button>
+    <button class= "button" onclick="actorDeVozDe()">Ver Actor de una Linea de Voz</button>
+    <button class= "button" onclick="bugsAsignadosA()">Ver Bugs Asignados</button>
+    <button class= "button" onclick="verTrabajadoresDeFeature()">Ver Trabajadores de un Feature</button>
+    <button class= "button" onclick="verTrabajadoresDeEscenario()">Ver Trabajadores de un Escenario</button>
     </div>
 
-    <button onclick="location.href='/showBugTable'">Show Bug Table</button>
-    <button onclick="location.href='/showSedeTable'">Show Sede Table</button>
-    <button onclick="location.href='/showDevTable'">Show Dev Table</button>
+    <h2>Queries</h2>
+    <button class="button" onclick="verOcupacionEmpleados()">
+      Ver Empleados con sus Ocupaciones</button
+    ><br />
+    <h1>Show Tables</h1>
+    <button class="button" onclick="location.href='/tables/showBugTable'">
+      Show Bug Table
+    </button>
+    <button class="button" onclick="location.href='/tables/showSedeTable'">
+      Show Sede Table
+    </button>
+    <button class="button" onclick="location.href='/tables/showDevTable'">
+      Show Dev Table
+    </button>
+    <button
+      class="button"
+      onclick="location.href='/tables/showEquipTable'"
+    >
+      Show Equipamiento Table
+    </button>
+    <button class="button" onclick="location.href='/tables/showAssetTable'">
+      Show Asset Table</button
+    ><br />
+    <button class="button" onclick="location.href='/tables/showPjTable'">
+      Show Personaje Table
+    </button>
+    <button class="button" onclick="location.href='/tables/showSmsTable'">
+      Show SFX/Musica/Sprites Table
+    </button>
+    <button class="button" onclick="location.href='/tables/showAnimTable'">
+      Show Animaciones Table
+    </button>
+    <button class="button" onclick="location.href='/tables/showVlTable'">
+      Show Lineas de Voz Table</button
+    >
+    <button class="button" onclick="location.href='/tables/showLinkTable'">
+      Show Escenario - Arte Table
+    </button><br /><br />
+    <button class="volver-button" onclick="location.href='/'">Volver</button>
 
     <!-- Result area -->
     <div id="resultArea"></div>

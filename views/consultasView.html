@@ -1,6 +1,6 @@
 <!-- public/searchAndButtons.html -->
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,19 +8,54 @@
     <title>Search and Buttons</title>
   </head>
   <body>
-    <h1>Search and Buttons</h1>
-
+    <style>
+      .container{
+        display: grid;
+        width: 1fr;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 1em;
+        padding-top: 20px;
+      }
+      .button {
+        font-size: 20px;
+        background-color: lightblue;
+        transition: background-color 0.3s ease;
+      }
+      .button:hover {
+        background-color: #84abb8;
+      }
+      .volver-button {
+        font-size: 20px;
+        background-color: lightgreen;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+      .volver-button:hover {
+        background-color: #64a364;
+      }
+    </style>
+    <h1 style="font-family: 'Comic Sans MS', cursive;">Search Queries</h1>
     <!-- Search bar -->
-    <label for="searchBar">Search:</label>
-    <input type="text" id="searchBar" placeholder="Enter search term" />
+    <label
+      for="searchBar"
+      style="font-weight: bold; font-size: 24px; width: 300px; height: 40px"
+      >Search:</label
+    >
+    <input
+      type="text"
+      id="searchBar"
+      placeholder="Enter search term"
+      style="font-weight: bold; font-size: 24px; width: 300px; height: 40px"
+    /><br /><br />
 
     <!-- Search button -->
+    <div class="container">
+
     <button onclick="verArteEncargado()">Search Arte Encargado</button>
     <button onclick="verReporter()">Search Reporter</button>
     <button onclick="verAnimadoresEncargados()">Ver Animadores Encargados</button>
     <button onclick="verMiembrosDesigners()">Ver Miembros Designer</button>
     <button onclick="verBugsReportados()">Ver Bugs Reportados</button>
-    <button onclick="verOcupacionEmpleados()">Ver Empleado con Ocupaciones</button>
     <button onclick="verPromedioResolucion()">Ver Promedio de Resolucion</button>
     <button onclick="empleadosDeGrupo()">Ver Empleados por Grupo</button>
     <button onclick="verBugsFeatEsc()">Ver los Bugs de un Feature</button>
@@ -46,11 +81,11 @@
     <script>
       function verArteEncargado() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value
+          document.getElementById("searchBar").value,
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verArteEncargado?nombreEsc=${searchTerm}`)
+        fetch(`/queries/verArteEncargado?nombreEsc=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableAE(data))
           .catch((error) => console.error("Error:", error));
@@ -58,11 +93,11 @@
 
       function verAnimadoresEncargados() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value
+          document.getElementById("searchBar").value,
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verAnimadoresEncargados?nombreEsc=${searchTerm}`)
+        fetch(`/queries/verAnimadoresEncargados?nombreEsc=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableAE(data))
           .catch((error) => console.error("Error:", error));
@@ -86,14 +121,13 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
-
       function verReporter() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value
+          document.getElementById("searchBar").value,
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verReporter?titulo=${searchTerm}`)
+        fetch(`/queries/verReporter?titulo=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableR(data))
           .catch((error) => console.error("Error:", error));
@@ -104,7 +138,8 @@
 
         // Display the result in a table
         let tableHtml = '<h2>Resultado</h2><table border="1">';
-        tableHtml += "<tr><th>Usuario</th><th>Nombre</th><th>Apellido</th></tr>";
+        tableHtml +=
+          "<tr><th>Usuario</th><th>Nombre</th><th>Apellido</th></tr>";
 
         // Iterate through the data and add a single row for each record
         data.forEach((row) => {
@@ -121,14 +156,13 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
-
       function verBugsReportados() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value
+          document.getElementById("searchBar").value,
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verBugsReportados?username=${searchTerm}`)
+        fetch(`/queries/verBugsReportados?username=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableB(data))
           .catch((error) => console.error("Error:", error));
@@ -139,7 +173,8 @@
 
         // Display the result in a table
         let tableHtml = '<h2>Bugs Reporados</h2><table border="1">';
-        tableHtml += "<th>ID</th><th>Title</th><th>Description</th><th>Priority</th><th>Evidence File</th><th>Report Date</th><th>Fecha de Solucion</th><th>Feature ID</th><th>Scenario ID</th>";
+        tableHtml +=
+          "<th>ID</th><th>Title</th><th>Description</th><th>Priority</th><th>Evidence File</th><th>Report Date</th><th>Fecha de Solucion</th><th>Feature ID</th><th>Scenario ID</th>";
 
         // Iterate through the data and add a single row for each record
         data.forEach((row) => {
@@ -162,14 +197,13 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
-
       function verBugsFeatEsc() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value
+          document.getElementById("searchBar").value,
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verBugsFeatEsc?id_fe=${searchTerm}`)
+        fetch(`/queries/verBugsFeatEsc?id_fe=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableBE(data))
           .catch((error) => console.error("Error:", error));
@@ -196,10 +230,9 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
-
       function verOcupacionEmpleados() {
-  // Make the request to the stored procedure
-        fetch(`/verOcupacionEmpleados`)
+        // Make the request to the stored procedure
+        fetch(`/queries/verOcupacionEmpleados`)
           .then((response) => response.json())
           .then((data) => displayTableOE(data))
           .catch((error) => console.error("Error:", error));
@@ -208,7 +241,8 @@
       function displayTableOE(data) {
         // Display the result in a table
         let tableHtml = '<h2>Resultados</h2><table border="1">';
-        tableHtml += "<tr><th>Usuario</th><th>Nombre</th><th>Apellido</th><th>Ocupacion</th><th>Grupo</th></tr>";
+        tableHtml +=
+          "<tr><th>Usuario</th><th>Nombre</th><th>Apellido</th><th>Ocupacion</th><th>Grupo</th></tr>";
 
         // Iterate through the data and add a single row for each record
         data.forEach((row) => {
@@ -227,14 +261,13 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
-
       function verPromedioResolucion() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value
+          document.getElementById("searchBar").value,
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verPromedioResolucion?nombreGrDev=${searchTerm}`)
+        fetch(`/queries/verPromedioResolucion?nombreGrDev=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTablePR(data))
           .catch((error) => console.error("Error:", error));
@@ -291,11 +324,11 @@
 
       function empleadosDeGrupo() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value
+          document.getElementById("searchBar").value,
         );
 
         // Make the request with the encoded parameter
-        fetch(`/empleadosDeGrupo?nombre=${searchTerm}`)
+        fetch(`/queries/empleadosDeGrupo?nombre=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableEG(data))
           .catch((error) => console.error("Error:", error));
@@ -322,14 +355,13 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
-
       function verEscCompl() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value
+          document.getElementById("searchBar").value,
         );
 
         // Make the request with the encoded parameter
-        fetch(`/verEscCompl?grupo_fe=${searchTerm}`)
+        fetch(`/queries/verEscCompl?grupo_fe=${searchTerm}`)
           .then((response) => response.json())
           .then((data) => displayTableEC(data))
           .catch((error) => console.error("Error:", error));

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update EQUIPAMIENTO</title>
+  </head>
+  <body>
+    <h2>Update Data in EQUIPAMIENTO Table</h2>
+    <form action="/updates/submitUpdatedEquip" method="post">
+      <label for="id_equip">ID:</label>
+      <input
+        type="text"
+        name="id_equip"
+        value="<%= equipData.id_equipamiento %>"
+        readonly
+      /><br />
+
+      <label for="nombre_equip">Nombre:</label>
+      <input
+        type="text"
+        name="nombre_equip"
+        value="<%= equipData.nombre_equipamiento %>"
+        required
+      /><br />
+
+      <label for="precio">Precio:</label>
+      <input
+        type="number"
+        name="precio"
+        value="<%= equipData.precio %>"
+        required
+      /><br />
+
+      <label for="cuit_sede">CUIT SEDE:</label>
+      <input
+        type="number"
+        name="cuit_sede"
+        value="<%= equipData.SEDE_cuit %>"
+        required
+      /><br />
+
+      <label for="user">Asignado a:</label>
+      <input type="text" name="user" value="<%= equipData.user %>" /><br />
+
+      <button type="submit">Update Data</button>
+    </form>
+  </body>
+</html>

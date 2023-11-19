@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update EMPLEADO Form</title>
+</head>
+<body>
+
+    <h1>Modificar Empleado</h1>
+
+    <form action="/updates/submitUpdatedEmpleado" method="post">
+            <label for="user">DNI:</label>
+            <input type="text" id="user" name="user" value="<%= empleadoData.user %>" readonly><br>
+
+            <label for="dni">DNI:</label>
+            <input type="text" id="dni" name="dni" value="<%= empleadoData.dni %>" readonly><br>
+    
+            <label for="nombre_empleado">Nombre:</label>
+            <input type="text" id="nombre_empleado" name="nombre_empleado" value="<%= empleadoData.nombre_empleado %>" required><br>
+    
+            <label for="apellido_empleado">Apellido:</label>
+            <input type="text" id="apellido_empleado" name="apellido_empleado" value="<%= empleadoData.apellido_empleado %>" required><br>
+    
+            <label for="fecha_nac">Fecha de Nacimiento:</label>
+            <input type="date" id="fecha_nac" name="fecha_nac" value="<%= empleadoData.fecha_nac %>" required><br>
+    
+            <label for="ingreso_empresa">Fecha de Ingreso a la Empresa:</label>
+            <input type="date" id="ingreso_empresa" name="ingreso_empresa" value="<%= empleadoData.ingreso_empresa %>" required><br>                            
+
+            <label for="ingreso_proyecto">Fecha de Ingreso al Proyecto:</label>
+            <input type="date" id="ingreso_proyecto" name="ingreso_proyecto" value="<%= empleadoData.ingreso_proyecto %>" required><br>
+    
+            <label for="sueldo">Sueldo:</label>
+            <input type="number" id="sueldo" name="sueldo" value="<%= empleadoData.sueldo %>" required><br>
+    
+            <label for="rubro">Rubro:</label>
+            <input type="text" id="rubro" name="rubro" value="<%= empleadoData.rubro %>" required><br>
+    
+            <label for="seniority">Seniority:</label>
+            <input type="text" id="seniority" name="seniority" value="<%= empleadoData.seniority %>" required><br>
+    
+            <button type="submit">Enviar</button>
+    </form>
+</body>
+</html>

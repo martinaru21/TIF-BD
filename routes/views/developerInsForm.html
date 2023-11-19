@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crear nuevo Developer</title>
+  </head>
+  <body>
+    <h1>Crear nuevo Developer</h1>
+
+    <form action="/inserts/insertDeveloper" method="post">
+      <label for="dni">DNI:</label>
+      <input type="text" id="dni" name="dni" required /><br />
+
+      <label for="nombre">Nombre:</label>
+      <input type="text" id="nombre" name="nombre" required /><br />
+
+      <label for="apellido">Apellido:</label>
+      <input type="text" id="apellido" name="apellido" required /><br />
+
+      <label for="fecha_nac">Fecha de Nacimiento:</label>
+      <input type="date" id="fecha_nac" name="fecha_nac" required /><br />
+
+      <label for="ing_emp">Fecha de Ingreso a la Empresa:</label>
+      <input type="date" id="ing_emp" name="ing_emp" required /><br />
+
+      <label for="ing_proy">Fecha de Ingreso al Proyecto:</label>
+      <input type="date" id="ing_proy" name="ing_proy" required /><br />
+
+      <label for="sueldo">Sueldo:</label>
+      <input type="number" id="sueldo" name="sueldo" required /><br />
+
+      <label for="rubro">Rubro:</label>
+      <input type="text" id="rubro" name="rubro" required /><br />
+
+      <label for="seniority">Seniority:</label>
+      <input type="text" id="seniority" name="seniority" required /><br />
+
+      <label for="grupo">Grupo:</label>
+      <input type="text" id="grupo" name="grupo" required /><br />
+
+      <button type="submit">Enviar</button>
+    </form>
+  </body>
+</html>

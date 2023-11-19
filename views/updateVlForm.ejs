@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update LINEA_VOZ</title>
+  </head>
+  <body>
+    <h2>Update Data in LINEA_VOZ Table</h2>
+    <form action="/updates/submitUpdatedVl" method="post">
+      <label for="id">ID:</label>
+      <input
+        type="text"
+        name="id"
+        value="<%= vlData.id_arte %>"
+        readonly
+      /><br />
+
+      <label for="nombre">Name:</label>
+      <input
+        type="text"
+        name="nombre"
+        value="<%= vlData.nombre_arte %>"
+        required
+      /><br />
+
+      <label for="direccion">Address:</label>
+      <input
+        type="text"
+        name="direccion"
+        value="<%= vlData.direccion_NAS %>"
+        required
+      /><br />
+
+      <label for="idPersonaje">Personaje ID:</label>
+      <input
+        type="text"
+        name="idPersonaje"
+        value="<%= vlData.id_escenario %>"
+        required
+      /><br />
+
+      <label for="grupo">Group:</label>
+      <input
+        type="text"
+        name="grupo"
+        value="<%= vlData.grupo %>"
+        required
+      /><br />
+
+      <label for="actorUser">Voice Actor User:</label>
+      <input
+        type="text"
+        name="actorUser"
+        value="<%= vlData.user %>"
+        required
+      /><br />
+
+      <label for="lineaEsp">Spanish Text:</label>
+      <textarea name="lineaEsp" rows="2" required><%= vlData.txt_sp %></textarea
+      ><br />
+
+      <label for="lineaEng">English Text:</label>
+      <textarea name="lineaEng" rows="2" required>
+<%= vlData.txt_eng %></textarea
+      ><br />
+
+      <button type="submit">Update Data</button>
+    </form>
+  </body>
+</html>

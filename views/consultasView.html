@@ -26,17 +26,16 @@
     <button onclick="verBugsFeatEsc()">Ver los Bugs de un Feature</button>
     <button onclick="verEscCompl()">Ver Escenario Completo</button>
     <button onclick="verPromedioFinalizacion()">Ver Promedio de Finalizacion</button>
-    <button onclick="search('*')">Button 12</button>
-    <button onclick="search('*')">Button 13</button>
-    <button onclick="search('*')">Button 14</button>
-    <button onclick="search('*')">Button 15</button>
-    <button onclick="search('*')">Button 16</button>
-    <button onclick="search('*')">Button 17</button>
-    <button onclick="search('*')">Button 18</button>
-    <button onclick="search('*')">Button 19</button>
-    <button onclick="search('*')">Button 20</button>
-    <button onclick="search('*')">Button 21</button>
-    <button onclick="search('*')">Button 22</button>
+    <button onclick="verLineasDeVoz()">Ver Lineas de Voz</button>
+    <button onclick="verAnimAsset()">Ver Animacion de un Asset</button>
+    <button onclick="trabajosDe()">Ver Trabajos</button>
+    <button onclick="SASdeEscenario()">Ver Arte de un Escenario</button>
+    <button onclick="verEquipDeSede()">Ver el Equipamiento de una Sede</button>
+    <button onclick="verEquipDeEmpleado()">Ver el Equipamiento de una Persona</button>
+    <button onclick="actorDeVozDe()">Ver Actor de una Linea de Voz</button>
+    <button onclick="bugsAsignadosA()">Ver Bugs Asignados</button>
+    <button onclick="verTrabajadoresDeFeature()">Ver Trabajadores de un Feature</button>
+    <button onclick="verTrabajadoresDeEscenario()">Ver Trabajadores de un Escenario</button>
     <button onclick="location.href='/showBugTable'">Show Bug Table</button>
     <button onclick="location.href='/showSedeTable'">Show Sede Table</button>
     <button onclick="location.href='/showDevTable'">Show Dev Table</button>
@@ -253,7 +252,6 @@
           .catch((error) => console.error("Error:", error));
       }
 
-
       function displayTablePR(data) {
         console.log("Data received:", data);
 
@@ -289,6 +287,7 @@
         // Display the table in a designated area on your page
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
+
 
       function empleadosDeGrupo() {
         const searchTerm = encodeURIComponent(
@@ -349,6 +348,237 @@
           tableHtml += `<td>${row.id_escenario}</td>`;
           tableHtml += `<td>${row.nombre_escenario}</td>`;
           tableHtml += `<td>${row.estado}</td>`;
+          tableHtml += `</tr>`;
+        });
+
+        tableHtml += "</table>";
+
+        // Display the table in a designated area on your page
+        document.getElementById("resultArea").innerHTML = tableHtml;
+      }
+
+
+      function verLineasDeVoz() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/verLineasDeVoz?id_pj=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableLV(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function displayTableLV(data) {
+        console.log("Data received:", data);
+
+        // Display the result in a table
+        let tableHtml = '<h2>Resultado</h2><table border="1">';
+        tableHtml += "<tr><th>ID</th><th>Texto Español</th><th>Texto Ingles</th></tr>";
+
+        // Iterate through the data and add rows to the table
+        data.forEach((row) => {
+          tableHtml += `<tr>`;
+          tableHtml += `<td>${row.id_arte}</td>`;
+          tableHtml += `<td>${row.txt_sp}</td>`;
+          tableHtml += `<td>${row.txt_eng}</td>`;
+          tableHtml += `</tr>`;
+        });
+
+        tableHtml += "</table>";
+
+        // Display the table in a designated area on your page
+        document.getElementById("resultArea").innerHTML = tableHtml;
+      }
+
+
+      function verAnimAsset() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/verAnimAsset?id_asset=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableAA(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function displayTableAA(data) {
+        console.log("Data received:", data);
+
+        // Display the result in a table
+        let tableHtml = '<h2>Resultado</h2><table border="1">';
+        tableHtml += "<tr><th>ID</th><th>Nombre</th></tr>";
+
+        // Iterate through the data and add rows to the table
+        data.forEach((row) => {
+          tableHtml += `<tr>`;
+          tableHtml += `<td>${row.id_arte}</td>`;
+          tableHtml += `<td>${row.nombre_arte}</td>`;
+          tableHtml += `</tr>`;
+        });
+
+        tableHtml += "</table>";
+
+        // Display the table in a designated area on your page
+        document.getElementById("resultArea").innerHTML = tableHtml;
+      }
+
+
+      function trabajosDe() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/trabajosDe?usuario=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableT(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function SASdeEscenario() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/SASdeEscenario?nombre=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableT(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function verEquipDeSede() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/verEquipDeSede?nombre=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableT(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function verEquipDeEmpleado() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/verEquipDeEmpleado?nombre=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableT(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function displayTableT(data) {
+        console.log("Data received:", data);
+
+        // Display the result in a table
+        let tableHtml = '<h2>Resultado</h2><table border="1">';
+        tableHtml += "<tr><th>ID</th><th>Nombre</th></tr>";
+
+        // Iterate through the data and add rows to the table
+        data.forEach((row) => {
+          tableHtml += `<tr>`;
+          tableHtml += `<td>${row.ID}</td>`;
+          tableHtml += `<td>${row.NOMBRE}</td>`;
+          tableHtml += `</tr>`;
+        });
+
+        tableHtml += "</table>";
+
+        // Display the table in a designated area on your page
+        document.getElementById("resultArea").innerHTML = tableHtml;
+      }
+
+
+      function actorDeVozDe() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/actorDeVozDe?nombre=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableAV(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function verTrabajadoresDeFeature() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/verTrabajadoresDeFeature?nombre=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableAV(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function verTrabajadoresDeEscenario() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/verTrabajadoresDeEscenario?nombre=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableAV(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function displayTableAV(data) {
+        console.log("Data received:", data);
+
+        // Display the result in a table
+        let tableHtml = '<h2>Resultado</h2><table border="1">';
+        tableHtml += "<tr><th>Nombre</th><th>Apellido</th></tr>";
+
+        // Iterate through the data and add rows to the table
+        data.forEach((row) => {
+          tableHtml += `<tr>`;
+          tableHtml += `<td>${row.NOMBRE}</td>`;
+          tableHtml += `<td>${row.APELLIDO}</td>`;
+          tableHtml += `</tr>`;
+        });
+
+        tableHtml += "</table>";
+
+        // Display the table in a designated area on your page
+        document.getElementById("resultArea").innerHTML = tableHtml;
+      }
+
+
+      function bugsAsignadosA() {
+        const searchTerm = encodeURIComponent(
+          document.getElementById("searchBar").value
+        );
+
+        // Make the request with the encoded parameter
+        fetch(`/bugsAsignadosA?nombre=${searchTerm}`)
+          .then((response) => response.json())
+          .then((data) => displayTableBA(data))
+          .catch((error) => console.error("Error:", error));
+      }
+
+      function displayTableBA(data) {
+        console.log("Data received:", data);
+
+        // Display the result in a table
+        let tableHtml = '<h2>Resultado</h2><table border="1">';
+        tableHtml += "<tr><th>ID</th><th>Titulo</th></tr>";
+
+        // Iterate through the data and add rows to the table
+        data.forEach((row) => {
+          tableHtml += `<tr>`;
+          tableHtml += `<td>${row.ID}</td>`;
+          tableHtml += `<td>${row.TITULO}</td>`;
           tableHtml += `</tr>`;
         });
 

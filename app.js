@@ -714,11 +714,43 @@ app.get('/verPromedioFinalizacion', (req, res) => {
 });
 
 app.get('/verLineasDeVoz', (req, res) => {
-  const nombreGrDev = req.query.nombreGrDev;
+  const id_pj = req.query.id_pj;
 
   // Execute the stored procedure
   const query = 'CALL verLineasDeVoz(?)';
-  connection.query(query, [nombreGrDev], (err, results) => {
+  connection.query(query, [id_pj], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
+app.get('/verAnimAsset', (req, res) => {
+  const id_asset = req.query.id_asset;
+
+  // Execute the stored procedure
+  const query = 'CALL verAnimAsset(?)';
+  connection.query(query, [id_asset], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
+app.get('/trabajosDe', (req, res) => {
+  const usuario = req.query.usuario;
+
+  // Execute the stored procedure
+  const query = 'CALL trabajosDe(?)';
+  connection.query(query, [usuario], (err, results) => {
     if (err) {
       console.error('Error executing stored procedure:', err);
       res.status(500).send('Internal Server Error');
@@ -731,7 +763,119 @@ app.get('/verLineasDeVoz', (req, res) => {
 
 
 
-  // Start the server
+app.get('/SASdeEscenario', (req, res) => {
+  const nombre = req.query.nombre;
+
+  // Execute the stored procedure
+  const query = 'CALL SASdeEscenario(?)';
+  connection.query(query, [nombre], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
+app.get('/verEquipDeSede', (req, res) => {
+  const nombre = req.query.nombre;
+
+  // Execute the stored procedure
+  const query = 'CALL verEquipDeSede(?)';
+  connection.query(query, [nombre], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
+app.get('/verEquipDeEmpleado', (req, res) => {
+  const nombre = req.query.nombre;
+
+  // Execute the stored procedure
+  const query = 'CALL verEquipDeEmpleado(?)';
+  connection.query(query, [nombre], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
+app.get('/actorDeVozDe', (req, res) => {
+  const nombre = req.query.nombre;
+
+  // Execute the stored procedure
+  const query = 'CALL actorDeVozDe(?)';
+  connection.query(query, [nombre], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
+app.get('/bugsAsignadosA', (req, res) => {
+  const nombre = req.query.nombre;
+
+  // Execute the stored procedure
+  const query = 'CALL bugsAsignadosA(?)';
+  connection.query(query, [nombre], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
+app.get('/verTrabajadoresDeFeature', (req, res) => {
+  const nombre = req.query.nombre;
+
+  // Execute the stored procedure
+  const query = 'CALL verTrabajadoresDeFeature(?)';
+  connection.query(query, [nombre], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
+app.get('/verTrabajadoresDeEscenario', (req, res) => {
+  const nombre = req.query.nombre;
+
+  // Execute the stored procedure
+  const query = 'CALL verTrabajadoresDeEscenario(?)';
+  connection.query(query, [nombre], (err, results) => {
+    if (err) {
+      console.error('Error executing stored procedure:', err);
+      res.status(500).send('Internal Server Error');
+      return;
+    }
+    const data = results[0];
+    res.json(data);
+  });
+});
+
+// Start the server
   app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
   });

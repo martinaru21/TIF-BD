@@ -42,13 +42,11 @@
     /><br /><br />
 
     <!-- Search button -->
-<<<<<<< HEAD
     <button onclick="verArteEncargado()">Search Arte Encargado</button>
     <button onclick="verReporter()">Search Reporter</button>
     <button onclick="verAnimadoresEncargados()">Ver Animadores Encargados</button>
     <button onclick="verMiembrosDesigners()">Ver Miembros Designer</button>
     <button onclick="verBugsReportados()">Ver Bugs Reportados</button>
-    <button onclick="verOcupacionEmpleados()">Ver Empleado con Ocupaciones</button>
     <button onclick="verPromedioResolucion()">Ver Promedio de Resolucion</button>
     <button onclick="empleadosDeGrupo()">Ver Empleados por Grupo</button>
     <button onclick="verBugsFeatEsc()">Ver los Bugs de un Feature</button>
@@ -65,49 +63,6 @@
     <button onclick="search('*')">Button 20</button>
     <button onclick="search('*')">Button 21</button>
     <button onclick="search('*')">Button 22</button>
-    <button onclick="location.href='/showBugTable'">Show Bug Table</button>
-    <button onclick="location.href='/showSedeTable'">Show Sede Table</button>
-    <button onclick="location.href='/showDevTable'">Show Dev Table</button>
-=======
-    <button class="button" onclick="verArteEncargado()">
-      Search Arte Encargado
-    </button>
-    <button class="button" onclick="verReporter()">Search Reporter</button>
-    <button class="button" onclick="verAnimadoresEncargados()">
-      Ver Animadores Encargados
-    </button>
-    <button class="button" onclick="verMiembrosDesigners()">
-      Ver Miembros Designer</button
-    ><br />
-    <button class="button" onclick="verBugsReportados()">
-      Ver Bugs Reportados
-    </button>
-    <button class="button" onclick="verPromedioResolucion()">
-      Ver Promedio de Resolucion
-    </button>
-    <button class="button" onclick="empleadosDeGrupo()">
-      Ver Empleados por Grupo
-    </button>
-    <button class="button" onclick="verBugsFeatEsc()">
-      Ver los Bugs de un Feature</button
-    ><br />
-    <button class="button" onclick="verEscCompl()">
-      Ver Escenario Completo
-    </button>
-    <button class="button" onclick="nombreGrDev()">
-      Ver Promedio de Finalizacion por Grupo
-    </button>
-    <button class="button" onclick="search('*')">Button 12</button>
-    <button class="button" onclick="search('*')">Button 13</button><br />
-    <button class="button" onclick="search('*')">Button 14</button>
-    <button class="button" onclick="search('*')">Button 15</button>
-    <button class="button" onclick="search('*')">Button 16</button>
-    <button class="button" onclick="search('*')">Button 17</button><br />
-    <button class="button" onclick="search('*')">Button 18</button>
-    <button class="button" onclick="search('*')">Button 19</button>
-    <button class="button" onclick="search('*')">Button 20</button>
-    <button class="button" onclick="search('*')">Button 21</button>
-    <button class="button" onclick="search('*')">Button 22</button><br />
     <h2>Queries</h2>
     <button class="button" onclick="verOcupacionEmpleados()">
       Ver Empleados con sus Ocupaciones</button
@@ -147,7 +102,6 @@
       Show Escenario - Arte Table
     </button><br /><br />
     <button class="volver-button" onclick="location.href='/'">Volver</button>
->>>>>>> 6cc102db66bd7fd05738825d14b29ec15335e05e
 
     <!-- Result area -->
     <div id="resultArea"></div>
@@ -378,7 +332,6 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
-<<<<<<< HEAD
       function displayTablePF(data) {
         console.log("Data received:", data);
 
@@ -397,8 +350,6 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
-=======
->>>>>>> 6cc102db66bd7fd05738825d14b29ec15335e05e
       function empleadosDeGrupo() {
         const searchTerm = encodeURIComponent(
           document.getElementById("searchBar").value,
@@ -465,14 +416,11 @@
         // Display the table in a designated area on your page
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
-<<<<<<< HEAD
 
 
 
 
 
-=======
->>>>>>> 6cc102db66bd7fd05738825d14b29ec15335e05e
     </script>
   </body>
 </html>

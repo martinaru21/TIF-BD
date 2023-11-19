@@ -104,7 +104,7 @@ router.get("/sedeMenu", (req, res) => {
   res.send(styling + `
     <h1>Administrador: Sedes</h1>
     <button class="button" onclick="location.href='/inserts/sedeInsertForm'">Nuevo</button>
-    <button class="button" onclick="location.href='/updates/updateSede'">Modificar</button>
+    <button class="button" onclick="location.href='/updates/updateSede'">Modificar</button><br/><br/>
     <button class="volver-button" onclick="location.href='/admin'">Volver</button>
   `);
 });

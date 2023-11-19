@@ -13,6 +13,13 @@ const deletesRouter = require("../routes/deletes.js");
 const queriesRouter = require("../routes/queries.js");
 
 const styling = `<style>
+.container{
+	display: grid;
+	width: 1fr;
+	grid-template-columns: repeat(4, 1fr);
+	grid-gap: 1em;
+	padding-top: 20px;
+}
 .button {
   font-size: 20px;
   background-color: lightblue;
@@ -65,22 +72,24 @@ router.get("/admin", (req, res) => {
   res.send(styling + `
     <h1>Administrador</h1>
     <h2>Insertar/Modificar/Eliminar</h2>
+    <div class="container">
     <button class="button" onclick="location.href='/bugMenu'">Bugs</button>
     <button class="button" onclick="location.href='/sedeMenu'">Sedes</button>
     <button class="button" onclick="location.href='/equipMenu'">Equipamiento</button>
-    <button class="button" onclick="location.href='/developerMenu'">Developers</button><br/><br/>
+    <button class="button" onclick="location.href='/developerMenu'">Developers</button>
     <button class="button" onclick="location.href='/designerMenu'">Designers</button>
     <button class="button" onclick="location.href='/artistaMenu'">Artistas</button>
     <button class="button" onclick="location.href='/testerMenu'">Testers</button>
-    <button class="button" onclick="location.href='/grupoDeveloperMenu'">Grupos de Developers</button><br/><br/>
+    <button class="button" onclick="location.href='/grupoDeveloperMenu'">Grupos de Developers</button>
     <button class="button" onclick="location.href='/grupoDesignerMenu'">Grupos de Designers</button>
     <button class="button" onclick="location.href='/grupoArtistaMenu'">Grupos de Artistas</button>
     <button class="button" onclick="location.href='/assetMenu'">Assets</button>
-    <button class="button" onclick="location.href='/pjMenu'">Personajes</button><br/><br/>
+    <button class="button" onclick="location.href='/pjMenu'">Personajes</button>
     <button class="button" onclick="location.href='/featMenu'">Features</button>
     <button class="button" onclick="location.href='/smsMenu'">SFX/Musica/Sprites</button>
     <button class="button" onclick="location.href='/animMenu'">Animaciones</button>
-    <button class="button" onclick="location.href='/vlMenu'">Lineas de Voz</button><br/>
+    <button class="button" onclick="location.href='/vlMenu'">Lineas de Voz</button>
+    </div>
     <h2>Asignar/Relacionar</h2>
     <button class="button" onclick="location.href='/queries/linkEquipEmp'">Asignar Equipamiento a un Empleado</button>
     <button class="button" onclick="location.href='/queries/linkEscArt'">Incluir Arte en un Escenario</button><br/><br/>

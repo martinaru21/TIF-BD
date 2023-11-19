@@ -9,6 +9,13 @@
   </head>
   <body>
     <style>
+      .container{
+        display: grid;
+        width: 1fr;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 1em;
+        padding-top: 20px;
+      }
       .button {
         font-size: 20px;
         background-color: lightblue;
@@ -42,6 +49,8 @@
     /><br /><br />
 
     <!-- Search button -->
+    <div class="container">
+
     <button onclick="verArteEncargado()">Search Arte Encargado</button>
     <button onclick="verReporter()">Search Reporter</button>
     <button onclick="verAnimadoresEncargados()">Ver Animadores Encargados</button>
@@ -63,6 +72,8 @@
     <button onclick="search('*')">Button 20</button>
     <button onclick="search('*')">Button 21</button>
     <button onclick="search('*')">Button 22</button>
+  </div>
+
     <h2>Queries</h2>
     <button class="button" onclick="verOcupacionEmpleados()">
       Ver Empleados con sus Ocupaciones</button

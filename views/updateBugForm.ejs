@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Bug</title>
+</head>
+<body>
+  <h2>Update Data in BUG Table</h2>
+  <form action="/updates/submitUpdatedBug" method="post">
+    <label for="id_bug">BUG ID:</label>
+    <input type="text" name="id_bug" value="<%= bugData.id_bug %>" readonly><br>
+
+    <label for="titulo_bug">Titulo:</label>
+    <input type="text" name="titulo_bug" value="<%= bugData.titulo_bug %>" required><br>
+
+    <label for="desc_bug">Descripcion:</label>
+    <textarea name="desc_bug" rows="4" required> <%= bugData.desc_bug %> </textarea><br>
+
+    <label for="prioridad">Prioridad:</label>
+    <input type="number" name="prioridad" value="<%= bugData.prioridad %>" required><br>
+
+    <label for="archivo_evidencia">Nombre Evidencia:</label>
+    <input type="text" name="archivo_evidencia" value="<%= bugData.archivo_evidencia %>" required><br>
+
+    <label for="id_feature">ID Feature:</label>
+    <input type="text" name="id_feature" value="<%= bugData.id_feature %>" ><br>
+
+    <label for="id_escenario">ID Escenario:</label>
+    <input type="text" name="id_escenario" value="<%= bugData.id_escenario %>" ><br>
+
+    <label for="tester_user">Usuario Reporter:</label>
+    <input type="text" name="tester_user" value="<%= bugData.tester_user %>" required><br>
+
+    <button type="submit">Update Data</button>
+  </form>
+</body>
+</html>

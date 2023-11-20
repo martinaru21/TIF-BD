@@ -57,6 +57,7 @@ router.get("/showBugTable", (req, res) => {
           border-collapse: collapse;
           word-break: break-word;
           width: 100%;
+          font-family: 'Trebuchet MS';
         }
         th, td {
           border: 1px solid black;
@@ -64,7 +65,7 @@ router.get("/showBugTable", (req, res) => {
           text-align: left;
         }
       </style>
-      <h2>Data from BUG Table</h2>
+      <h2 style="font-family: 'Trebuchet MS'">BUGS</h2>
       <table>
         <tr>
           <th>ID</th>
@@ -121,6 +122,7 @@ router.get("/showSedeTable", (req, res) => {
       border-collapse: collapse;
       word-break: break-word;
       width: 100%;
+      font-family: 'Trebuchet MS'
     }
     th, td {
       border: 1px solid black;
@@ -128,7 +130,7 @@ router.get("/showSedeTable", (req, res) => {
       text-align: left;
     }
   </style>
-  <h2>Data from SEDE Table</h2>
+  <h2 style="font-family: 'Trebuchet MS'">SEDES</h2>
                           <table border="1">
                             <tr>
                               <th>CUIT</th>
@@ -178,6 +180,7 @@ router.get("/showEquipTable", (req, res) => {
       border-collapse: collapse;
       word-break: break-word;
       width: 100%;
+      font-family: 'Trebuchet MS'
     }
     th, td {
       border: 1px solid black;
@@ -185,7 +188,7 @@ router.get("/showEquipTable", (req, res) => {
       text-align: left;
     }
   </style>
-  <h2>Data from EQUIPAMIENTO Table</h2>
+  <h2 style="font-family: 'Trebuchet MS'">EQUIPAMIENTO</h2>
                           <table border="1">
                             <tr>
                               <th>ID</th>
@@ -203,7 +206,7 @@ router.get("/showEquipTable", (req, res) => {
 
 
 //*************TABLA DEVS+EMPLEADO*************
-// Route to show the SEDE table
+// Route to show the DEV table
 router.get("/showDevTable", (req, res) => {
   // SQL query to join EMPLEADO and DEVELOPER tables on the 'user' column
   const query = `
@@ -222,14 +225,23 @@ router.get("/showDevTable", (req, res) => {
 
     // Render the data in an HTML table
     const tableRows = results.map((row) => {
+      const birthDate = new Date(row.fecha_nac).toLocaleDateString(
+        "en-GB",
+      );
+      const enterDate = new Date(row.ingreso_empresa).toLocaleDateString(
+        "en-GB",
+      );
+      const projDate = new Date(row.ingreso_proyecto).toLocaleDateString(
+        "en-GB",
+      );
       return `<tr>
             <td>${row.user}</td>
             <td>${row.dni}</td>
             <td>${row.nombre_empleado}</td>
             <td>${row.apellido_empleado}</td>
-            <td>${row.fecha_nac}</td>
-            <td>${row.ingreso_empresa}</td>
-            <td>${row.ingreso_proyecto}</td>
+            <td>${birthDate}</td>
+            <td>${enterDate}</td>
+            <td>${projDate}</td>
             <td>${row.sueldo}</td>
             <td>${row.rubro}</td>
             <td>${row.seniority}</td>
@@ -242,6 +254,7 @@ router.get("/showDevTable", (req, res) => {
                         border-collapse: collapse;
                         word-break: break-word;
                         width: 100%;
+                        font-family: 'Trebuchet MS'
                       }
                       th, td {
                         border: 1px solid black;
@@ -249,7 +262,242 @@ router.get("/showDevTable", (req, res) => {
                         text-align: left;
                       }
                     </style>
-                    <h2>Joined Data from EMPLEADO and DEVELOPER Tables</h2>
+                    <h2 style="font-family: 'Trebuchet MS'">DEVELOPER</h2>
+                    <table>
+                      <tr>
+                        <th>User</th>
+                        <th>DNI</th>
+                        <th>Nombre Empleado</th>
+                        <th>Apellido Empleado</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>Fecha Empresa</th>
+                        <th>Fecha Proyecto</th>
+                        <th>Sueldo</th>
+                        <th>Rubro</th>
+                        <th>Seniority</th>
+                        <th>Grupo</th>
+                      </tr>${tableRows.join("")}</table><br/><br/>
+                      <button onclick="location.href='/consultas'">Volver</button>`;
+
+    // Send the HTML response with the table
+    res.send(tableHtml);
+  });
+});
+
+//*************TABLA DEsS+EMPLEADO*************
+// Route to show the DES table
+router.get("/showDesTable", (req, res) => {
+  // SQL query to join EMPLEADO and DESIGNER tables on the 'user' column
+  const query = `
+      SELECT E.user, E.dni, E.nombre_empleado, E.apellido_empleado, E.fecha_nac, 
+             E.ingreso_empresa, E.ingreso_proyecto, E.sueldo, E.rubro, E.seniority, D.grupo
+      FROM EMPLEADO E
+      JOIN DESIGNER D ON E.user = D.user`;
+
+  // Execute the query
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing MySQL query:", err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    // Render the data in an HTML table
+    const tableRows = results.map((row) => {
+      const birthDate = new Date(row.fecha_nac).toLocaleDateString(
+        "en-GB",
+      );
+      const enterDate = new Date(row.ingreso_empresa).toLocaleDateString(
+        "en-GB",
+      );
+      const projDate = new Date(row.ingreso_proyecto).toLocaleDateString(
+        "en-GB",
+      );
+      return `<tr>
+            <td>${row.user}</td>
+            <td>${row.dni}</td>
+            <td>${row.nombre_empleado}</td>
+            <td>${row.apellido_empleado}</td>
+            <td>${birthDate}</td>
+            <td>${enterDate}</td>
+            <td>${projDate}</td>
+            <td>${row.sueldo}</td>
+            <td>${row.rubro}</td>
+            <td>${row.seniority}</td>
+            <td>${row.grupo}</td>
+          </tr>`;
+    });
+
+    const tableHtml = `<style>
+                      table {
+                        border-collapse: collapse;
+                        word-break: break-word;
+                        width: 100%;
+                        font-family: 'Trebuchet MS'
+                      }
+                      th, td {
+                        border: 1px solid black;
+                        padding: 8px;
+                        text-align: left;
+                      }
+                    </style>
+                    <h2 style="font-family: 'Trebuchet MS'">DESIGNER</h2>
+                    <table>
+                      <tr>
+                        <th>User</th>
+                        <th>DNI</th>
+                        <th>Nombre Empleado</th>
+                        <th>Apellido Empleado</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>Fecha Empresa</th>
+                        <th>Fecha Proyecto</th>
+                        <th>Sueldo</th>
+                        <th>Rubro</th>
+                        <th>Seniority</th>
+                        <th>Grupo</th>
+                      </tr>${tableRows.join("")}</table><br/><br/>
+                      <button onclick="location.href='/consultas'">Volver</button>`;
+
+    // Send the HTML response with the table
+    res.send(tableHtml);
+  });
+});
+
+//*************TABLA TESTER+EMPLEADO*************
+// Route to show the TESTER table
+router.get("/showTestTable", (req, res) => {
+  // SQL query to join EMPLEADO and TESTER tables on the 'user' column
+  const query = `
+      SELECT E.user, E.dni, E.nombre_empleado, E.apellido_empleado, E.fecha_nac, 
+             E.ingreso_empresa, E.ingreso_proyecto, E.sueldo, E.rubro, E.seniority
+      FROM EMPLEADO E
+      JOIN TESTER D ON E.user = D.user`;
+
+  // Execute the query
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing MySQL query:", err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    // Render the data in an HTML table
+    const tableRows = results.map((row) => {
+      const birthDate = new Date(row.fecha_nac).toLocaleDateString(
+        "en-GB",
+      );
+      const enterDate = new Date(row.ingreso_empresa).toLocaleDateString(
+        "en-GB",
+      );
+      const projDate = new Date(row.ingreso_proyecto).toLocaleDateString(
+        "en-GB",
+      );
+      return `<tr>
+            <td>${row.user}</td>
+            <td>${row.dni}</td>
+            <td>${row.nombre_empleado}</td>
+            <td>${row.apellido_empleado}</td>
+            <td>${birthDate}</td>
+            <td>${enterDate}</td>
+            <td>${projDate}</td>
+            <td>${row.sueldo}</td>
+            <td>${row.rubro}</td>
+            <td>${row.seniority}</td>
+          </tr>`;
+    });
+
+    const tableHtml = `<style>
+                      table {
+                        border-collapse: collapse;
+                        word-break: break-word;
+                        width: 100%;
+                        font-family: 'Trebuchet MS'
+                      }
+                      th, td {
+                        border: 1px solid black;
+                        padding: 8px;
+                        text-align: left;
+                      }
+                    </style>
+                    <h2 style="font-family: 'Trebuchet MS'">TESTER</h2>
+                    <table>
+                      <tr>
+                        <th>User</th>
+                        <th>DNI</th>
+                        <th>Nombre Empleado</th>
+                        <th>Apellido Empleado</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>Fecha Empresa</th>
+                        <th>Fecha Proyecto</th>
+                        <th>Sueldo</th>
+                        <th>Rubro</th>
+                        <th>Seniority</th>
+                      </tr>${tableRows.join("")}</table><br/><br/>
+                      <button onclick="location.href='/consultas'">Volver</button>`;
+
+    // Send the HTML response with the table
+    res.send(tableHtml);
+  });
+});
+
+//*************TABLA ARTISTA+EMPLEADO*************
+// Route to show the ARTISTA table
+router.get("/showArtTable", (req, res) => {
+  // SQL query to join EMPLEADO and ARTISTA tables on the 'user' column
+  const query = `
+      SELECT E.user, E.dni, E.nombre_empleado, E.apellido_empleado, E.fecha_nac, 
+             E.ingreso_empresa, E.ingreso_proyecto, E.sueldo, E.rubro, E.seniority, D.grupo
+      FROM EMPLEADO E
+      JOIN ARTISTA D ON E.user = D.user`;
+
+  // Execute the query
+  connection.query(query, (err, results) => {
+    if (err) {
+      console.error("Error executing MySQL query:", err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+
+    // Render the data in an HTML table
+    const tableRows = results.map((row) => {
+      const birthDate = new Date(row.fecha_nac).toLocaleDateString(
+        "en-GB",
+      );
+      const enterDate = new Date(row.ingreso_empresa).toLocaleDateString(
+        "en-GB",
+      );
+      const projDate = new Date(row.ingreso_proyecto).toLocaleDateString(
+        "en-GB",
+      );
+      return `<tr>
+            <td>${row.user}</td>
+            <td>${row.dni}</td>
+            <td>${row.nombre_empleado}</td>
+            <td>${row.apellido_empleado}</td>
+            <td>${birthDate}</td>
+            <td>${enterDate}</td>
+            <td>${projDate}</td>
+            <td>${row.sueldo}</td>
+            <td>${row.rubro}</td>
+            <td>${row.seniority}</td>
+            <td>${row.grupo}</td>
+          </tr>`;
+    });
+
+    const tableHtml = `<style>
+                      table {
+                        border-collapse: collapse;
+                        word-break: break-word;
+                        width: 100%;
+                        font-family: 'Trebuchet MS'
+                      }
+                      th, td {
+                        border: 1px solid black;
+                        padding: 8px;
+                        text-align: left;
+                      }
+                    </style>
+                    <h2 style="font-family: 'Trebuchet MS'">ARTISTA</h2>
                     <table>
                       <tr>
                         <th>User</th>
@@ -310,6 +558,7 @@ router.get("/showAssetTable", (req, res) => {
         border-collapse: collapse;
         word-break: break-word;
         width: 100%;
+        font-family: 'Trebuchet MS'
       }
       th, td {
         border: 1px solid black;
@@ -317,7 +566,7 @@ router.get("/showAssetTable", (req, res) => {
         text-align: left;
       }
     </style>
-    <h2>Data from ASSET Table</h2>
+    <h2 style="font-family: 'Trebuchet MS'">ASSETS</h2>
     <table>
       <tr>
         <th>ID</th>
@@ -378,6 +627,7 @@ router.get("/showPjTable", (req, res) => {
         border-collapse: collapse;
         word-break: break-word;
         width: 100%;
+        font-family: 'Trebuchet MS'
       }
       th, td {
         border: 1px solid black;
@@ -385,7 +635,7 @@ router.get("/showPjTable", (req, res) => {
         text-align: left;
       }
     </style>
-    <h2>Data from PERSONAJE Table</h2>
+    <h2 style="font-family: 'Trebuchet MS'">PERSONAJE</h2>
     <table>
       <tr>
         <th>ID</th>
@@ -442,6 +692,7 @@ router.get("/showFeatTable", (req, res) => {
         border-collapse: collapse;
         word-break: break-word;
         width: 100%;
+        font-family: 'Trebuchet MS'
       }
       th, td {
         border: 1px solid black;
@@ -449,7 +700,7 @@ router.get("/showFeatTable", (req, res) => {
         text-align: left;
       }
     </style>
-    <h2>Data from FEATURE Table</h2>
+    <h2 style="font-family: 'Trebuchet MS'">FEATURES</h2>
     <table>
       <tr>
         <th>ID</th>
@@ -499,6 +750,7 @@ router.get("/showSmsTable", (req, res) => {
         border-collapse: collapse;
         word-break: break-word;
         width: 100%;
+        font-family: 'Trebuchet MS'
       }
       th, td {
         border: 1px solid black;
@@ -506,7 +758,7 @@ router.get("/showSmsTable", (req, res) => {
         text-align: left;
       }
     </style>
-    <h2>Data from SPRITE_SFX_MUSICA Table</h2>
+    <h2 style="font-family: 'Trebuchet MS'">SPRITE/SFX/MUSICA</h2>
     <table>
       <tr>
         <th>ID</th>
@@ -554,6 +806,7 @@ router.get("/showAnimTable", (req, res) => {
         border-collapse: collapse;
         word-break: break-word;
         width: 100%;
+        font-family: 'Trebuchet MS'
       }
       th, td {
         border: 1px solid black;
@@ -561,7 +814,7 @@ router.get("/showAnimTable", (req, res) => {
         text-align: left;
       }
     </style>
-    <h2>Data from ANIMACION Table</h2>
+    <h2 style="font-family: 'Trebuchet MS'">ANIMACION</h2>
     <table>
       <tr>
         <th>ID</th>
@@ -613,6 +866,7 @@ router.get("/showVlTable", (req, res) => {
         border-collapse: collapse;
         word-break: break-word;
         width: 100%;
+        font-family: 'Trebuchet MS'
       }
       th, td {
         border: 1px solid black;
@@ -620,7 +874,7 @@ router.get("/showVlTable", (req, res) => {
         text-align: left;
       }
     </style>
-    <h2>Data from LINEA_VOZ Table</h2>
+    <h2 style="font-family: 'Trebuchet MS'">LINEAS DE VOZ</h2>
     <table>
       <tr>
         <th>ID</th>
@@ -668,6 +922,7 @@ router.get("/showLinkTable", (req, res) => {
         border-collapse: collapse;
         word-break: break-word;
         width: 100%;
+        font-family: 'Trebuchet MS'
       }
       th, td {
         border: 1px solid black;
@@ -675,11 +930,61 @@ router.get("/showLinkTable", (req, res) => {
         text-align: left;
       }
     </style>
-    <h2>Data from ESCENARIO_has_SPRITE_SFX_MUSICA Table</h2>
+    <h2 style="font-family: 'Trebuchet MS'">ESCENARIO - SPRITE/SFX/MUSICA</h2>
     <table>
       <tr>
         <th>ID Arte</th>
         <th>ID Escenario</th>
+      </tr>
+      ${tableRows.join("")}
+    </table><br/><br/>
+    <button onclick="location.href='/consultas'">Volver</button>`;
+
+      // Send the HTML response with the table
+      res.send(tableHtml);
+    },
+  );
+});
+
+//*************TABLA GRUPOS*************
+// Route to show the GRUPOS table
+router.get("/showGrTable", (req, res) => {
+  // Execute the query
+  connection.query(
+    "SELECT nombre_grupo, 'Developers' AS table_name FROM grupo_developer UNION SELECT nombre_grupo, 'Designers' AS table_name FROM grupo_designer UNION SELECT nombre_grupo, 'Artistas' AS table_name FROM grupo_artista;",
+    function (err, results) {
+      if (err) {
+        console.error("Error executing MySQL query: " + err.stack);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      // Render the data in an HTML table
+      const tableRows = results.map((row) => {
+        return `<tr>
+        <td>${row.nombre_grupo}</td>
+        <td >${row.table_name}</td>
+      </tr>`;
+      });
+
+      const tableHtml = `<style>
+      table {
+        border-collapse: collapse;
+        word-break: break-word;
+        width: 100%;
+        font-family: 'Trebuchet MS'
+      }
+      th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+      }
+    </style>
+    <h2 style="font-family: 'Trebuchet MS'">GRUPOS</h2>
+    <table>
+      <tr>
+        <th>Nombre Grupo</th>
+        <th>Tipo Grupo</th>
       </tr>
       ${tableRows.join("")}
     </table><br/><br/>

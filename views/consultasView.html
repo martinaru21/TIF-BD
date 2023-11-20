@@ -9,107 +9,132 @@
   </head>
   <body>
     <style>
-      .container{
-        display: grid;
-        width: 1fr;
-        grid-template-columns: repeat(4, 1fr);
-        grid-gap: 1em;
-        padding-top: 20px;
-      }
       .button {
+        font-family: 'Trebuchet MS';
         font-size: 20px;
-        background-color: lightblue;
+        background-color: #008CBA;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
         transition: background-color 0.3s ease;
       }
       .button:hover {
         background-color: #84abb8;
       }
       .volver-button {
+        font-family: 'Trebuchet MS';
         font-size: 20px;
-        background-color: lightgreen;
-        font-weight: bold;
+        background-color: #04AA6D;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
         transition: background-color 0.3s ease;
       }
       .volver-button:hover {
         background-color: #64a364;
       }
     </style>
-    <h1 style="font-family: 'Comic Sans MS', cursive;">Search Queries</h1>
+    <h1 style="font-family: 'Trebuchet MS'; font-weight: bold; font-size: 24px; width: 300px; height: 40px">Consultas de Búsqueda</h1>
     <!-- Search bar -->
     <label
       for="searchBar"
-      style="font-weight: bold; font-size: 24px; width: 300px; height: 40px"
-      >Search:</label
+      style="font-family: 'Trebuchet MS'; font-weight: bold; font-size: 18px; width: 250px; height: 20px"
+      >Búsqueda:</label
     >
     <input
       type="text"
       id="searchBar"
-      placeholder="Enter search term"
-      style="font-weight: bold; font-size: 24px; width: 300px; height: 40px"
+      placeholder="Ingrese un término de búsqueda"
+      style="font-family: 'Trebuchet MS'; font-size: 15px; width: 250px; height: 20px"
     /><br /><br />
 
     <!-- Search button -->
-    <div class="container">
-
-    <button class= "button" onclick="verArteEncargado()">Search Arte Encargado</button>
-    <button class= "button" onclick="verReporter()">Search Reporter</button>
-    <button class= "button" onclick="verAnimadoresEncargados()">Ver Animadores Encargados</button>
-    <button class= "button" onclick="verMiembrosDesigners()">Ver Miembros Designer</button>
-    <button class= "button" onclick="verBugsReportados()">Ver Bugs Reportados</button>
-    <button class= "button" onclick="verPromedioResolucion()">Ver Promedio de Resolucion</button>
-    <button class= "button" onclick="empleadosDeGrupo()">Ver Empleados por Grupo</button>
-    <button class= "button" onclick="verBugsFeatEsc()">Ver los Bugs de un Feature</button>
-    <button class= "button" onclick="verEscCompl()">Ver Escenario Completo</button>
-    <button class= "button" onclick="verPromedioFinalizacion()">Ver Promedio de Finalizacion</button>
-    <button class= "button" onclick="verLineasDeVoz()">Ver Lineas de Voz</button>
-    <button class= "button" onclick="verAnimAsset()">Ver Animacion de un Asset</button>
-    <button class= "button" onclick="trabajosDe()">Ver Trabajos</button>
-    <button class= "button" onclick="SASdeEscenario()">Ver Arte de un Escenario</button>
-    <button class= "button" onclick="verEquipDeSede()">Ver el Equipamiento de una Sede</button>
-    <button class= "button" onclick="verEquipDeEmpleado()">Ver el Equipamiento de una Persona</button>
-    <button class= "button" onclick="actorDeVozDe()">Ver Actor de una Linea de Voz</button>
-    <button class= "button" onclick="bugsAsignadosA()">Ver Bugs Asignados</button>
-    <button class= "button" onclick="verTrabajadoresDeFeature()">Ver Trabajadores de un Feature</button>
-    <button class= "button" onclick="verTrabajadoresDeEscenario()">Ver Trabajadores de un Escenario</button>
-    </div>
-
-    <h2>Queries</h2>
+    <button class="button" onclick="verArteEncargado()">Grupo a Cargo (Escenario)</button>
+    <button class="button" onclick="verReporter()">Quien Reporto</button>
+    <button class="button" onclick="verAnimadoresEncargados()">Grupo a Cargo (Animacion)</button>
+    <button class="button" onclick="verMiembrosDesigners()">Miembros de Grupo (Designers)</button>
+    <button class="button" onclick="verBugsReportados()">Bugs Reportados (Tester)</button>
+    <button class="button" onclick="verPromedioResolucion()">Promedio de Resolucion</button>
+    <button class="button" onclick="empleadosDeGrupo()">Miembros del Grupo</button>
+    <button class="button" onclick="verBugsFeatEsc()">Ver Bugs</button>
+    <button class="button" onclick="verEscCompl()">Escenarios a Cargo (Devs/Dsgs)</button>
+    <button class="button" onclick="verPromedioFinalizacion()">Promedio de Finalizacion</button>
+    <button class="button" onclick="verLineasDeVoz()">Lineas de Voz (PJ)</button>
+    <button class="button" onclick="verAnimAsset()">Animaciones (Asset)</button>
+    <button class="button" onclick="trabajosDe()">Trabajos (Empleado)</button>
+    <button class="button" onclick="SASdeEscenario()">Arte (Escenario)</button>
+    <button class="button" onclick="verEquipDeSede()">Equipamiento (Sede)</button>
+    <button class="button" onclick="verEquipDeEmpleado()">Equipamiento (Empleado)</button>
+    <button class="button" onclick="actorDeVozDe()">Actor (LdV)</button>
+    <button class="button" onclick="bugsAsignadosA()">Bugs a Cargo (GDevs)</button>
+    <button class="button" onclick="verTrabajadoresDeFeature()">Participantes (Feature)</button>
+    <button class="button" onclick="verTrabajadoresDeEscenario()">Participantes (Escenario)</button>
+   
+    <h1 style="font-family: 'Trebuchet MS'; font-weight: bold; font-size: 24px; width: 300px; height: 40px">Consultas Específicas</h2>
+   
     <button class="button" onclick="verOcupacionEmpleados()">
-      Ver Empleados con sus Ocupaciones</button
+      Empleados con sus Ocupaciones</button
     ><br />
-    <h1>Show Tables</h1>
+    <h1 style="font-family: 'Trebuchet MS'; font-weight: bold; font-size: 24px; width: 300px; height: 40px">Tablas Completas</h1>
     <button class="button" onclick="location.href='/tables/showBugTable'">
-      Show Bug Table
+      Bugs
     </button>
     <button class="button" onclick="location.href='/tables/showSedeTable'">
-      Show Sede Table
+      Sedes
     </button>
     <button class="button" onclick="location.href='/tables/showDevTable'">
-      Show Dev Table
+      Developers
+    </button>
+    <button class="button" onclick="location.href='/tables/showDesTable'">
+      Designers
+    </button>
+    <button class="button" onclick="location.href='/tables/showTestTable'">
+      Testers
+    </button>
+    <button class="button" onclick="location.href='/tables/showArtTable'">
+      Artistas
+    </button>
+    <button class="button" onclick="location.href='/tables/showGrTable'">
+      Grupos
     </button>
     <button
       class="button"
       onclick="location.href='/tables/showEquipTable'"
     >
-      Show Equipamiento Table
+      Equipamiento
     </button>
     <button class="button" onclick="location.href='/tables/showAssetTable'">
-      Show Asset Table</button
+      Assets</button
     ><br />
+    <button class="button" onclick="location.href='/tables/showFeatTable'">
+      Features
+    </button>
     <button class="button" onclick="location.href='/tables/showPjTable'">
-      Show Personaje Table
+      Personajes
     </button>
     <button class="button" onclick="location.href='/tables/showSmsTable'">
-      Show SFX/Musica/Sprites Table
+      SFX/Musica/Sprites
     </button>
     <button class="button" onclick="location.href='/tables/showAnimTable'">
-      Show Animaciones Table
+      Animaciones
     </button>
     <button class="button" onclick="location.href='/tables/showVlTable'">
-      Show Lineas de Voz Table</button
+      Lineas de Voz</button
     >
     <button class="button" onclick="location.href='/tables/showLinkTable'">
-      Show Escenario - Arte Table
+      Escenario-Arte
     </button><br /><br />
     <button class="volver-button" onclick="location.href='/'">Volver</button>
 
@@ -145,7 +170,7 @@
         console.log("Data received:", data);
 
         // Display the result in a table
-        let tableHtml = '<h2>Resultado</h2><table border="1">';
+        let tableHtml = '<h2>Resultados</h2><table border="1">';
         tableHtml += "<tr><th>Grupo</th></tr>";
 
         // Iterate through the data and add rows to the table
@@ -159,9 +184,10 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
+
       function verReporter() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value,
+          document.getElementById("searchBar").value
         );
 
         // Make the request with the encoded parameter
@@ -176,8 +202,7 @@
 
         // Display the result in a table
         let tableHtml = '<h2>Resultado</h2><table border="1">';
-        tableHtml +=
-          "<tr><th>Usuario</th><th>Nombre</th><th>Apellido</th></tr>";
+        tableHtml += "<tr><th>Usuario</th><th>Nombre</th><th>Apellido</th></tr>";
 
         // Iterate through the data and add a single row for each record
         data.forEach((row) => {
@@ -194,9 +219,10 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
+
       function verBugsReportados() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value,
+          document.getElementById("searchBar").value
         );
 
         // Make the request with the encoded parameter
@@ -211,8 +237,7 @@
 
         // Display the result in a table
         let tableHtml = '<h2>Bugs Reporados</h2><table border="1">';
-        tableHtml +=
-          "<th>ID</th><th>Title</th><th>Description</th><th>Priority</th><th>Evidence File</th><th>Report Date</th><th>Fecha de Solucion</th><th>Feature ID</th><th>Scenario ID</th>";
+        tableHtml += "<th>ID</th><th>Title</th><th>Description</th><th>Priority</th><th>Evidence File</th><th>Report Date</th><th>Fecha de Solucion</th><th>Feature ID</th><th>Scenario ID</th>";
 
         // Iterate through the data and add a single row for each record
         data.forEach((row) => {
@@ -235,9 +260,10 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
+
       function verBugsFeatEsc() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value,
+          document.getElementById("searchBar").value
         );
 
         // Make the request with the encoded parameter
@@ -268,8 +294,9 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
+
       function verOcupacionEmpleados() {
-        // Make the request to the stored procedure
+  // Make the request to the stored procedure
         fetch(`/queries/verOcupacionEmpleados`)
           .then((response) => response.json())
           .then((data) => displayTableOE(data))
@@ -279,8 +306,7 @@
       function displayTableOE(data) {
         // Display the result in a table
         let tableHtml = '<h2>Resultados</h2><table border="1">';
-        tableHtml +=
-          "<tr><th>Usuario</th><th>Nombre</th><th>Apellido</th><th>Ocupacion</th><th>Grupo</th></tr>";
+        tableHtml += "<tr><th>Usuario</th><th>Nombre</th><th>Apellido</th><th>Ocupacion</th><th>Grupo</th></tr>";
 
         // Iterate through the data and add a single row for each record
         data.forEach((row) => {
@@ -299,9 +325,10 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
+
       function verPromedioResolucion() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value,
+          document.getElementById("searchBar").value
         );
 
         // Make the request with the encoded parameter
@@ -362,7 +389,7 @@
 
       function empleadosDeGrupo() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value,
+          document.getElementById("searchBar").value
         );
 
         // Make the request with the encoded parameter
@@ -393,9 +420,10 @@
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
 
+
       function verEscCompl() {
         const searchTerm = encodeURIComponent(
-          document.getElementById("searchBar").value,
+          document.getElementById("searchBar").value
         );
 
         // Make the request with the encoded parameter
@@ -657,8 +685,6 @@
         // Display the table in a designated area on your page
         document.getElementById("resultArea").innerHTML = tableHtml;
       }
-
-
     </script>
   </body>
 </html>

@@ -211,12 +211,12 @@ router.post("/submitUpdatedEquip", (req, res) => {
 });
 
 // Modificar EMPLEADO
-router.get("/empleadoModForm", (req, res) => {
+app.get("/empleadoModForm", (req, res) => {
   res.sendFile(__dirname + "\\views/enterUserEmpForm.html");
 });
 
 // Route to handle the form submission and redirect to the update form
-router.post("/enterUserEmp", (req, res) => {
+app.post("/enterUserEmp", (req, res) => {
   const { user } = req.body;
 
   // Verifica si se hay usuario
@@ -230,7 +230,7 @@ router.post("/enterUserEmp", (req, res) => {
 });
 
 // Route to render the update form with EMPLEADO data
-router.get("/updateThisEmpleado/:user", (req, res) => {
+app.get("/updateThisEmpleado/:user", (req, res) => {
   const user = req.params.user;
 
   // SQL query to check if the EMPLEADO with the given USER exists
@@ -261,7 +261,7 @@ router.get("/updateThisEmpleado/:user", (req, res) => {
 });
 
 // Route to handle the updated data submission
-router.post("/submitUpdatedEmpleado", (req, res) => {
+app.post("/submitUpdatedEmpleado", (req, res) => {
   const {
     dni,
     nombre_empleado,

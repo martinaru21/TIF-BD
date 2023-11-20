@@ -13,25 +13,37 @@ const deletesRouter = require("../routes/deletes.js");
 const queriesRouter = require("../routes/queries.js");
 
 const styling = `<style>
-.container{
-	display: grid;
-	width: 1fr;
-	grid-template-columns: repeat(4, 1fr);
-	grid-gap: 1em;
-	padding-top: 20px;
-}
 .button {
+  font-family: 'Trebuchet MS';
   font-size: 20px;
-  background-color: lightblue;
+  background-color: #008CBA;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 .button:hover {
   background-color: #84abb8;
 }
 .volver-button {
+  font-family: 'Trebuchet MS';
   font-size: 20px;
-  background-color: lightgreen;
-  font-weight: bold;
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 .volver-button:hover {
@@ -43,8 +55,8 @@ const styling = `<style>
 //*************PAGINA PRINCIPAL*************
 router.get("/", (req, res) => {
   res.send(styling + `
-    <h1>Menu Principal</h1>
-    <h2>Sistema de Gestión del Desarrollo de un Videojuego</h2>
+    <h1 style="font-family: 'Trebuchet MS';">Menu Principal</h1>
+    <h2 style="font-family: 'Trebuchet MS';">Sistema de Gestión del Desarrollo de un Videojuego</h2>
     <button class="button" onclick="location.href='/consultas'">Consultas</button>
     <button class="button" onclick="location.href='/admin'">Administrador</button>
   `);
@@ -70,27 +82,25 @@ router.get("/consultas", (req, res) => {
 //*************MENU ADMIN*************
 router.get("/admin", (req, res) => {
   res.send(styling + `
-    <h1>Administrador</h1>
-    <h2>Insertar/Modificar/Eliminar</h2>
-    <div class="container">
+    <h1 style="font-family: 'Trebuchet MS';">Administrador</h1>
+    <h2 style="font-family: 'Trebuchet MS';"> Insertar/Modificar/Eliminar</h2>
     <button class="button" onclick="location.href='/bugMenu'">Bugs</button>
     <button class="button" onclick="location.href='/sedeMenu'">Sedes</button>
     <button class="button" onclick="location.href='/equipMenu'">Equipamiento</button>
-    <button class="button" onclick="location.href='/developerMenu'">Developers</button>
+    <button class="button" onclick="location.href='/developerMenu'">Developers</button><br/><br/>
     <button class="button" onclick="location.href='/designerMenu'">Designers</button>
     <button class="button" onclick="location.href='/artistaMenu'">Artistas</button>
     <button class="button" onclick="location.href='/testerMenu'">Testers</button>
-    <button class="button" onclick="location.href='/grupoDeveloperMenu'">Grupos de Developers</button>
+    <button class="button" onclick="location.href='/grupoDeveloperMenu'">Grupos de Developers</button><br/><br/>
     <button class="button" onclick="location.href='/grupoDesignerMenu'">Grupos de Designers</button>
     <button class="button" onclick="location.href='/grupoArtistaMenu'">Grupos de Artistas</button>
     <button class="button" onclick="location.href='/assetMenu'">Assets</button>
-    <button class="button" onclick="location.href='/pjMenu'">Personajes</button>
+    <button class="button" onclick="location.href='/pjMenu'">Personajes</button><br/><br/>
     <button class="button" onclick="location.href='/featMenu'">Features</button>
     <button class="button" onclick="location.href='/smsMenu'">SFX/Musica/Sprites</button>
     <button class="button" onclick="location.href='/animMenu'">Animaciones</button>
-    <button class="button" onclick="location.href='/vlMenu'">Lineas de Voz</button>
-    </div>
-    <h2>Asignar/Relacionar</h2>
+    <button class="button" onclick="location.href='/vlMenu'">Lineas de Voz</button><br/>
+    <h2 style="font-family: 'Trebuchet MS';">Asignar/Relacionar</h2>
     <button class="button" onclick="location.href='/queries/linkEquipEmp'">Asignar Equipamiento a un Empleado</button>
     <button class="button" onclick="location.href='/queries/linkEscArt'">Incluir Arte en un Escenario</button><br/><br/>
     <button class="volver-button" onclick="location.href='/'">Volver</button>
@@ -100,7 +110,7 @@ router.get("/admin", (req, res) => {
 //*************MENU BUGS*************
 router.get("/bugMenu", (req, res) => {
   res.send(styling + `
-        <h1>Administrador: Bugs</h1>
+        <h1 style="font-family: 'Trebuchet MS';">Administrador: Bugs</h1>
         <button class="button" onclick="location.href='/inserts/bugInsertForm'">Nuevo</button>
         <button class="button" onclick="location.href='/updates/updateBug'">Modificar</button>
         <button class="button" onclick="location.href='/deletes/deleteBug'">Borrar</button><br/><br/>
@@ -111,7 +121,7 @@ router.get("/bugMenu", (req, res) => {
 //*************MENU SEDE*************
 router.get("/sedeMenu", (req, res) => {
   res.send(styling + `
-    <h1>Administrador: Sedes</h1>
+    <h1 style="font-family: 'Trebuchet MS';">Administrador: Sedes</h1>
     <button class="button" onclick="location.href='/inserts/sedeInsertForm'">Nuevo</button>
     <button class="button" onclick="location.href='/updates/updateSede'">Modificar</button><br/><br/>
     <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -121,7 +131,7 @@ router.get("/sedeMenu", (req, res) => {
 //*************MENU EQUIPAMIENTO*************
 router.get("/equipMenu", (req, res) => {
   res.send(styling + `
-        <h1>Administrador: Equipamiento</h1>
+        <h1 style="font-family: 'Trebuchet MS';">Administrador: Equipamiento</h1>
         <button class="button" onclick="location.href='/inserts/equipInsertForm'">Nuevo</button>
         <button class="button" onclick="location.href='/updates/updateEquip'">Modificar</button>
         <button class="button" onclick="location.href='/deletes/deleteEquip'">Borrar</button><br/><br/>
@@ -132,7 +142,7 @@ router.get("/equipMenu", (req, res) => {
 //*************MENU DEVELOPERS*************
 router.get("/developerMenu", (req, res) => {
   res.send(styling + `
-    <h1>Administrador: Developers</h1>
+    <h1 style="font-family: 'Trebuchet MS';">Administrador: Developers</h1>
     <button class="button" onclick="location.href='/inserts/developerInsForm'">Nuevo</button>
     <button class="button" onclick="location.href='/updates/empleadoModForm'">Modificar</button><br/><br/>
     <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -142,7 +152,7 @@ router.get("/developerMenu", (req, res) => {
 //*************MENU DESIGNERS*************
 router.get("/designerMenu", (req, res) => {
   res.send(styling + `
-    <h1>Administrador: Designers</h1>
+    <h1 style="font-family: 'Trebuchet MS';">Administrador: Designers</h1>
     <button class="button" onclick="location.href='/inserts/designerInsForm'">Nuevo</button>
     <button class="button" onclick="location.href='/updates/empleadoModForm'">Modificar</button><br/><br/>
     <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -152,7 +162,7 @@ router.get("/designerMenu", (req, res) => {
 //*************MENU ARTISTAS*************
 router.get("/artistaMenu", (req, res) => {
   res.send(styling + `
-  <h1>Administrador: Artistas</h1>
+  <h1 style="font-family: 'Trebuchet MS';">Administrador: Artistas</h1>
   <button class="button" onclick="location.href='/inserts/artistaInsForm'">Nuevo</button>
   <button class="button" onclick="location.href='/updates/empleadoModForm'">Modificar</button><br/><br/>
   <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -162,7 +172,7 @@ router.get("/artistaMenu", (req, res) => {
 //*************MENU TESTERS*************
 router.get("/testerMenu", (req, res) => {
   res.send(styling + `
-  <h1>Administrador: Tester</h1>
+  <h1 style="font-family: 'Trebuchet MS';">Administrador: Tester</h1>
   <button class="button" onclick="location.href='/inserts/testerInsForm'">Nuevo</button>
   <button class="button" onclick="location.href='/updates/empleadoModForm'">Modificar</button><br/><br/>
   <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -172,7 +182,7 @@ router.get("/testerMenu", (req, res) => {
 //*************MENU GRUPO DEVELOPERS*************
 router.get("/grupoDeveloperMenu", (req, res) => {
   res.send(styling + `
-    <h1>Administrador: Grupos de Developers</h1>
+    <h1 style="font-family: 'Trebuchet MS';">Administrador: Grupos de Developers</h1>
     <button class="button" onclick="location.href='/inserts/grupoDevInsForm'">Nuevo</button><br/><br/>
     <button class="volver-button" onclick="location.href='/admin'">Volver</button>
   `);
@@ -181,7 +191,7 @@ router.get("/grupoDeveloperMenu", (req, res) => {
 //*************MENU GRUPO DESIGNERS*************
 router.get("/grupoDesignerMenu", (req, res) => {
   res.send(styling + `
-    <h1>Administrador: Grupos de Designers</h1>
+    <h1 style="font-family: 'Trebuchet MS';">Administrador: Grupos de Designers</h1>
     <button class="button" onclick="location.href='/inserts/grupoDesInsForm'">Nuevo</button><br/><br/>
     <button class="volver-button" onclick="location.href='/admin'">Volver</button>
   `);
@@ -190,7 +200,7 @@ router.get("/grupoDesignerMenu", (req, res) => {
 //*************MENU GRUPO ARTISTAS*************
 router.get("/grupoArtistaMenu", (req, res) => {
   res.send(styling + `
-  <h1>Administrador: Grupos de Artistas</h1>
+  <h1 style="font-family: 'Trebuchet MS';">Administrador: Grupos de Artistas</h1>
   <button class="button" onclick="location.href='/inserts/grupoArtInsForm'">Nuevo</button><br/><br/>
   <button class="volver-button" onclick="location.href='/admin'">Volver</button>
 `);
@@ -199,7 +209,7 @@ router.get("/grupoArtistaMenu", (req, res) => {
 //*************MENU ASSETS*************
 router.get("/assetMenu", (req, res) => {
   res.send(styling + `
-  <h1>Administrador: Asset</h1>
+  <h1 style="font-family: 'Trebuchet MS';">Administrador: Asset</h1>
   <button class="button" onclick="location.href='/inserts/assetInsertForm'">Nuevo</button>
   <button class="button" onclick="location.href='/updates/updateAsset'">Modificar</button><br/><br/>
   <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -209,7 +219,7 @@ router.get("/assetMenu", (req, res) => {
 //*************MENU PERSONAJES*************
 router.get("/pjMenu", (req, res) => {
   res.send(styling + `
-  <h1>Administrador: Personajes</h1>
+  <h1 style="font-family: 'Trebuchet MS';">Administrador: Personajes</h1>
   <button class="button" onclick="location.href='/inserts/pjInsertForm'">Nuevo</button>
   <button class="button" onclick="location.href='/updates/updatePj'">Modificar</button><br/><br/>
   <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -219,7 +229,7 @@ router.get("/pjMenu", (req, res) => {
 //*************MENU FEATURE*************
 router.get("/featMenu", (req, res) => {
   res.send(styling + `
-  <h1>Administrador: Features</h1>
+  <h1 style="font-family: 'Trebuchet MS';">Administrador: Features</h1>
   <button class="button" onclick="location.href='/inserts/featInsertForm'">Nuevo</button>
   <button class="button" onclick="location.href='/updates/updatefeat'">Modificar</button><br/><br/>
   <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -229,7 +239,7 @@ router.get("/featMenu", (req, res) => {
 //*************MENU SFX/MUSICA/SPRITE*************
 router.get("/smsMenu", (req, res) => {
   res.send(styling + `
-  <h1>Administrador: SFX/Musica/Sprites</h1>
+  <h1 style="font-family: 'Trebuchet MS';">Administrador: SFX/Musica/Sprites</h1>
   <button class="button" onclick="location.href='/inserts/smsInsertForm'">Nuevo</button>
   <button class="button" onclick="location.href='/updates/updateSms'">Modificar</button><br/><br/>
   <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -239,7 +249,7 @@ router.get("/smsMenu", (req, res) => {
 //*************MENU ANIMACIONES*************
 router.get("/animMenu", (req, res) => {
   res.send(styling + `
-  <h1>Administrador: Animaciones</h1>
+  <h1 style="font-family: 'Trebuchet MS';">Administrador: Animaciones</h1>
   <button class="button" onclick="location.href='/inserts/animInsertForm'">Nuevo</button>
   <button class="button" onclick="location.href='/updates/updateAnim'">Modificar</button><br/><br/>
   <button class="volver-button" onclick="location.href='/admin'">Volver</button>
@@ -249,7 +259,7 @@ router.get("/animMenu", (req, res) => {
 //*************MENU LINEAS_VOZ*************
 router.get("/vlMenu", (req, res) => {
   res.send(styling + `
-  <h1>Administrador: Lineas de Voz</h1>
+  <h1 style="font-family: 'Trebuchet MS';">Administrador: Lineas de Voz</h1>
   <button class="button" onclick="location.href='/inserts/vlInsertForm'">Nuevo</button>
   <button class="button" onclick="location.href='/updates/updateVl'">Modificar</button><br/><br/>
   <button class="volver-button" onclick="location.href='/admin'">Volver</button>
